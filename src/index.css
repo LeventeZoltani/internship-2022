@@ -1,0 +1,33 @@
+:root {
+    --primary-color: #1a3755;
+    --secondary-color: #d7d149;
+    --complementary-color: #edf2f6;
+    --button-hover-color: #537ba4;
+
+    font-size: 62.5%;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font: 400 2rem/1.4 'Poppins', Helvetica, Arial, sans-serif;
+}
+
+body > #root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h1 {
+    color: #FFFFFF;
+    font-size: 3.5rem;
+    font-weight: 600;
+}
+
+
+

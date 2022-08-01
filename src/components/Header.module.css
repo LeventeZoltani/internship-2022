@@ -1,0 +1,10 @@
+.header {
+    width: 100%;
+    padding: 30px 10px;
+    background-color: var(--primary-color);
+    text-align: center;
+}
+
+.secondaryColor {
+    color: var(--secondary-color);
+}
