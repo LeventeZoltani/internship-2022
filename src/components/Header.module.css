@@ -1,10 +1,15 @@
 .header {
     width: 100%;
-    padding: 30px 10px;
-    background-color: var(--primary-color);
-    text-align: center;
+    height: 4rem;
+    /* padding: 40px 10px; */
+    /* background-color: var(--primary-color); */
+    /* text-align: center; */
+    color: rgb(253, 253, 253);
 }
 
-.secondaryColor {
+/* .secondaryColor {
     color: var(--secondary-color);
-}
+} */
+
+
+
