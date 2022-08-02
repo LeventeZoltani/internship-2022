@@ -1,0 +1,14 @@
+.container {
+    margin: 0 auto 40px auto;
+    max-width: 300px;
+}
+
+.dark {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.light {
+    background-color: #e4e4e4;
+    color: #000000;
+}

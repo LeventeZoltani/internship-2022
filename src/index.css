@@ -3,8 +3,6 @@
     --secondary-color: #d7d149;
     --complementary-color: #edf2f6;
     --button-hover-color: #537ba4;
-
-    font-size: 62.5%;
 }
 
 *, *:before, *:after {
@@ -13,7 +11,7 @@
 
 body {
     margin: 0;
-    font: 400 2rem/1.4 'Poppins', Helvetica, Arial, sans-serif;
+    font: 400 1.25rem/1.4 'Poppins', Helvetica, Arial, sans-serif;
 }
 
 body > #root {
@@ -25,9 +23,29 @@ body > #root {
 
 h1 {
     color: #FFFFFF;
-    font-size: 3.5rem;
+    font-size: 2.2rem;
     font-weight: 600;
 }
 
+input, button {
+    border-radius: 0;
+    border: 1px solid #000000;
+    padding: 3px;
+
+    height: 30px;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid var(--button-hover-color);
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.5;
+}
 
 
