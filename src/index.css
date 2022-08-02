@@ -13,7 +13,8 @@
 
 body {
     margin: 0;
-    font: 400 2rem/1.4 'Poppins', Helvetica, Arial, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
+    /* font: 400 2rem/1.4 'Poppins', Helvetica, Arial, sans-serif; */
 }
 
 body > #root {

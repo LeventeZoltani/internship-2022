@@ -8,3 +8,63 @@
 .secondaryColor {
     color: var(--secondary-color);
 }
+/* 
+.header{
+    background-color: var(--complementary-color);
+    height:100px;
+    margin:0;
+    display: flex;
+    justify-content: space-around;
+    padding:0;
+    letter-spacing:0.3px ;
+    font-weight: 400;
+    font-size:20px;
+    position: fixed;
+    width: 100%;
+    z-index: 4;
+
+}
+
+.navbar{
+    margin:0;
+    padding: 0;
+    height:100px;
+}
+
+.navbar .navbar-nav{
+    padding: 0;
+    margin-top:0;
+}
+ .navbar  ul li{
+    width: 100%; 
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+    height: 100px;
+    margin-top:0px;
+    background-color: #F8F9FA;
+    padding-left:50px;
+    padding-right: 50px;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color:#707070;
+    padding-top:32px;
+}
+
+.navbar ul li a:hover{
+    color:black;
+}
+
+.navbar .nav-item:hover{
+    background-color: #eeeeee;
+}
+
+button{
+    margin:30px;
+}
+
+.navbar-collapse .collapse .show .nav-item{
+    width: 100%;
+} */
