@@ -1,0 +1,13 @@
+.tableCellImage {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+
+.tableCell {
+    padding: 0;
+}
+
+.tableHeaderTitle {
+    margin: 0 10px;
+}
