@@ -2,87 +2,74 @@ import React, { Component } from 'react';
 
 import style from './Main.module.css';
 import SongListElement from './SongListElement';
+import MusicPlayer from './MusicPlayer';
+
 
 class Main extends Component {
 
     state = {
-        songs: [
-            {
-                id: 1, title: 'Blank Space', artist: 'Taylor Swift', album: '1989', genre:'pop',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 2, title: 'Primadonna', artist: 'MARINA', album: 'Electra Heart', genre:'electro-pop',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 4, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 5, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id:6, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 7, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 8, title: 'Blank Space', artist: 'Taylor Swift', album: '1989', genre:'pop',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 9, title: 'Primadonna', artist: 'MARINA', album: 'Electra Heart', genre:'electro-pop',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 10, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 11, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id:12, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-            {
-                id: 13, title: 'Gemini Feed', artist: 'BANKS', album: 'The Altar', genre:'alternative',
-                imageSrc: "https://pyxis.nymag.com/v1/imgs/5a1/58c/580de90bf142c7660dcbaf8faa789a61b1-20-taylor-swift-1989.2x.w710.png"
-            },
-        ]
+        currentSong: {},
+        openedPlayer: false,
     }
+
+    mountedStyle = { animation: "inAnimation 450ms ease-in" };
+
+    unmountedStyle = {
+        animation: "outAnimation 470ms ease-out",
+        animationFillMode: "forwards"
+    };
 
     constructor(props) {
         super(props);
+        this.setCurrentSong = this.setCurrentSong.bind(this);
+        this.closePlayer = this.closePlayer.bind(this);
+    }
+
+    setCurrentSong(id) {
+        let song = this.props.getSongById(id);
+        this.setState({
+            currentSong: song,
+            openedPlayer: true,
+        })
+        console.log("opened player: " + this.state.openedPlayer);
+    }
+
+    closePlayer() {
+        this.setState({
+            openedPlayer: false
+        })
     }
 
     render() {
 
         return (
             <main className={style.main}>
-                {/* <img className={style.decoration} src={decoration} alt="decoration"/>
-                <h2>Hello Awesome App!</h2>
-                <p>To get started edit a file in "./src" and save to reload.</p> */}
                 <ul>
-                    {Array.isArray(this.state.songs) ? this.state.songs.map(song => (
+                    {Array.isArray(this.props.songs) ? this.props.songs.map(song => (
                         <SongListElement
                             key={song.id}
+                            id={song.id}
                             title={song.title}
                             artist={song.artist}
                             imageSrc={song.imageSrc}
+                            currentSongChanger={this.setCurrentSong}
                         />
                     )) : null}
-                    {/* <MediaControlCard 
-                    title={this.state.songs[0].title} 
-                    artist={this.state.songs[0].artist}
-                    /> */}
                 </ul>
+                {this.state.openedPlayer === true &&
+                    <MusicPlayer
+                        // sx={{ display: this.state.openedPlayer ? 'block' : 'none' }}
+                        title={this.state.currentSong.title}
+                        artist={this.state.currentSong.artist}
+                        musicSrc={this.state.currentSong.musicSrc}
+                        openedPlayer={this.state.openedPlayer}
+                        closePlayer={this.closePlayer}
+                        mountedStyle={this.mountedStyle}
+                        unmountedStyle={this.unmountedStyle}
+                    />
+                }
+
+
             </main>
         );
     }

@@ -2,11 +2,16 @@
     width: 100%;
     max-width: 1280px;
     margin: 0 auto;
-
+    height: auto;
     text-align: center;
+    top: 0;
+    position: relative;
+    padding-bottom: 80px;
+    margin-top: 100px;
+    /* z-index: -1; */
 }
 
-.decoration {
+/* .decoration {
     animation: rotate 2000ms linear infinite;
 }
 
@@ -14,7 +19,31 @@
     from {
         transform: rotate(0);
     }
+
     to {
         transform: rotate(180deg);
+    }
+} */
+
+@keyframes inAnimation {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes outAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
     }
 }
