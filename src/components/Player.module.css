@@ -1,0 +1,18 @@
+.coverImage {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.playerGridContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

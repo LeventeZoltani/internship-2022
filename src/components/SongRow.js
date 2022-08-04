@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { Component } from 'react'
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Typography, IconButton } from '@mui/material';
+import formatDuration from './formatDuration';
+
 
 import HeartButton from './HeartButton';
 import style from './SongRow.module.css';
 
-export default function SongRow({ song }) {
+
+export default function SongRow(props) {
+    
     return (
         <TableRow
-            key={song.id}
+            key={props.song.id}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             hover={true}
         >
@@ -19,25 +23,25 @@ export default function SongRow({ song }) {
                 scope="row"
                 align='center'
             >
-                <IconButton>
-                    <PlayArrowIcon sx={{ fontSize: 20 }}></PlayArrowIcon>
+                <IconButton onClick={() => {props.handlePlayClick(props.song)}}>
+                    <PlayArrowIcon sx={{ fontSize: 20 }} ></PlayArrowIcon>
                 </IconButton>
             </TableCell>
 
-            <TableCell classNames={[style.tableCell, style.tableHeaderTitle]} component="th" scope="row" align='center'>
-                <img className={style.tableCellImage} src={song.imageUrl} alt={song.title}></img>
+            <TableCell classnames={[style.tableCell, style.tableHeaderTitle]} component="th" scope="row" align='center'>
+                <img className={style.tableCellImage} src={props.song.imageUrl} alt={props.song.title}></img>
             </TableCell>
 
             <TableCell className={style.tableCell}>
-                <Typography variant='h6'>{song.title}</Typography>
+                <Typography variant='h6'>{props.song.title}</Typography>
             </TableCell>
 
-            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{song.artist}</Typography></TableCell>
-            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{song.genre}</Typography></TableCell>
-            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{song.duration}</Typography></TableCell>
+            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{props.song.artist}</Typography></TableCell>
+            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{props.song.genre}</Typography></TableCell>
+            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{formatDuration(props.song.duration)}</Typography></TableCell>
             <TableCell className={style.tableCell} align="center">
                 <HeartButton />
             </TableCell>
         </TableRow>
-    )
+    );
 }

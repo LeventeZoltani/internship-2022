@@ -6,7 +6,7 @@ import style from './Footer.module.css';
 const Footer = () => {
     return (
         <footer className={style.footer}>
-            <img className={style.logo} src={logo} alt="Company Logo"/>
+            {/* <img className={style.logo} src={logo} alt="Company Logo"/> */}
         </footer>
     );
 };

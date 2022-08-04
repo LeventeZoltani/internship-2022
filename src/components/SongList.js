@@ -9,37 +9,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import { Typography } from '@mui/material';
+import { Typography, Box, Slide } from '@mui/material';
 
 import SongRow from './SongRow';
 import style from './SongList.module.css';
+import Player from './Player';
 
-const baseUrl = 'http://localhost:3000/songs';
 
-class SongList extends Component {
-    state = {
-        'songs': []
-    };
-
-    constructor(props) {
-        super(props)
-    }
-
-    componentDidMount() {
-        this.getSongs();
-    }
-
-    getSongs = async () => {
-        const response = await fetch(baseUrl);
-        const data = await response.json();
-        console.log(data)
-        this.setState(() => ({
-            'songs': data
-        }));
-    }
-
-    render() {
-        return (
+export default function SongList(props) {
+    return (
+        <>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -56,13 +35,16 @@ class SongList extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.songs.map((song) => (
-                            <SongRow song={song} key={song.id} />
+                        {props.songs.map((song) => (
+                            <SongRow
+                                song={song}
+                                key={song.id}
+                                handlePlayClick={props.handlePlayClick}    
+                            />
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-        );
-    };
+        </>
+    )
 }
-export default SongList;

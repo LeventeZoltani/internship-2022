@@ -2,6 +2,11 @@
     padding: 30px 10px;
     text-align: center;
     background-color: var(--complementary-color);
+    margin-top: auto;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 .logo {
