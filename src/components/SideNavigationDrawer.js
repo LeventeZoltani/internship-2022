@@ -1,9 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -13,12 +11,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import style from './SideNavigationDrawer.module.css'
 
-// const drawerWidth = 240;
 
 function SideNavigationDrawer(props) {
     const drawer = (
-        <div>
+        <div className={style.drawer}>
             <Toolbar />
             <List>
                 {['Home', 'Favourites'].map((text, index) => (
@@ -49,6 +47,7 @@ function SideNavigationDrawer(props) {
         >
             {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
+                className={style.drawer}
                 container={container}
                 variant="temporary"
                 open={props.drawer.mobileOpen}
@@ -65,6 +64,7 @@ function SideNavigationDrawer(props) {
                 {drawer}
             </Drawer>
             <Drawer
+                className={style.drawer}
                 variant="permanent"
                 sx={{
                     display: { xs: 'none', sm: 'block' },

@@ -24,7 +24,8 @@ const TinyText = styled(Typography)({
 });
 
 const CoverImage = ({ img, title }) => (
-    <img className={style.coverImage}
+    <img
+        className={style.coverImage}
         src={img}
         alt={title}
     >
@@ -34,73 +35,60 @@ const CoverImage = ({ img, title }) => (
 const useAudio = url => {
     const [audio, setAudio] = useState(new Audio(url));
     const [playing, setPlaying] = useState(false);
-  
+
     const toggle = () => setPlaying(!playing);
     const changeSong = (newUrl) => {
-        
-      setAudio(new Audio(newUrl));
+        audio.pause();
+        setPlaying(false);
+        setAudio(new Audio(newUrl));
     }
-  
+
     useEffect(() => {
         playing ? audio.play() : audio.pause();
-      },
-      [playing]
+    },
+        [playing]
     );
-  
-    useEffect(() => {
-      audio.addEventListener('ended', () => setPlaying(false));
-      return () => {
-        audio.removeEventListener('ended', () => setPlaying(false));
-      };
-    }, []);
-  
-    return [playing,changeSong, toggle];
-  };
+
+    return [playing, changeSong, toggle];
+};
 
 const Player = (props) => {
     const theme = useTheme();
-    // const duration = 200; // seconds
     const [position, setPosition] = useState(0);
     let [playing, changeSong, toggle] = useAudio(props.playedSong.audioUrl);
-    // const [player, setPlayer] = useState(null);
-    // const [audio, setAudio] = React.useState();
-    let audio;
 
-    React.useEffect(() => {
+    const prevSong = props.playedSong.audioUrl;
+
+    useEffect(() => {
         console.log(props.playedSong.audioUrl)
 
-        return () => {
-            
-           changeSong(props.playedSong.audioUrl);
-        };
+        changeSong(props.playedSong.audioUrl);
+        setPosition(0);
     }, [props.playedSong]);
 
-    // const handleClick = () => {
-
-
-    //     console.log(paused, player)
-
-    //     if (player) {
-    //         if (paused) {
-    //             player.pause();
-    //         } else {
-    //             // audio.volume = 0.4;
-    //             player.play();
-    //         }
-    //     }
-    //     return setPaused(() => !paused);
-    // }
+    useEffect(() => {
+        if (prevSong !== props.playedSong.audioUrl) {
+            setPosition(0);
+        }
+        if (playing) {
+            setTimeout(() => {
+                if (prevSong !== props.playedSong.audioUrl) {
+                    return setPosition(0);
+                }
+                return setPosition(position + 1)
+            }, 1000);
+        }
+    }, [position, playing])
 
     const mainIconColor = theme.palette.mode === 'dark' ? '#fff' : '#000';
 
     return (
         <>
-            {/* {console.log(props.playedSong)} */}
             <Box className={style.playBar} sx={{ flexGrow: 1 }} zIndex={15}>
                 <Paper elevation={3} sx={{ padding: 4 }}>
                     <Grid className={style.playerGridContainer} container spacing={0} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        <Grid item xs={4} sm={4} md={1} lg={1}>
-                            <CoverImage className={style.coverImage} img={props.playedSong.imageUrl} title={props.playedSong.title} />
+                        <Grid item xs={2} sm={2} md={1} lg={1}>
+                            <CoverImage img={props.playedSong.imageUrl} title={props.playedSong.title} />
                         </Grid>
                         <Grid item xs={4} sm={4} md={2} lg={2} paddingLeft='10px'>
                             <Typography variant='h3' align='left'>{props.playedSong.title}</Typography>
@@ -187,13 +175,6 @@ const Player = (props) => {
                                 <FavoriteBorderRoundedIcon fontSize="large"></FavoriteBorderRoundedIcon>
                             </IconButton>
                         </Grid>
-                        {/* <Grid item sx={2}>
-                <Stack spacing={2} direction="row" sx={{ mb: 1, px: 1 }} alignItems="center">
-                <VolumeDownRounded />
-
-                <VolumeUpRounded />
-                 </Stack>
-                </Grid> */}
                     </Grid>
                 </Paper>
             </Box></>
