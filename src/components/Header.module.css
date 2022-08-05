@@ -1,4 +1,4 @@
-.header {
+appbar {
     width: 100%;
     padding: 30px 10px;
     background-color: var(--primary-color);
@@ -8,3 +8,4 @@
 .secondaryColor {
     color: var(--secondary-color);
 }
+
