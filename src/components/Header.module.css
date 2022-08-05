@@ -5,11 +5,14 @@
     /* background-color: var(--primary-color); */
     /* text-align: center; */
     color: rgb(253, 253, 253);
+    font-size: medium;
 }
 
 /* .secondaryColor {
     color: var(--secondary-color);
 } */
 
-
-
+.logo {
+    width: 8rem;
+    height: 4rem;
+}

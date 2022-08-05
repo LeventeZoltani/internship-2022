@@ -1,40 +1,87 @@
 import React, { Component } from 'react';
+// import { useState } from 'react';
 
-// import decoration from './decoration.png';
+
 import style from './Main.module.css';
 import { Card } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
-import { Col } from 'react-bootstrap';
+
+
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import db from './db.js';
 
 class Main extends Component {
+
+    state = {
+        checked: false,
+    }
+
+    constructor(props) {
+        super(props);
+        this.playAudio = this.playAudio.bind(this);
+    }
+
+    mountedStyle = { animation: "inAnimation 450ms ease-in" };
+
+    unmountedStyle = {
+        animation: "outAnimation 470ms ease-out",
+        animationFillMode: "forwards"
+    };
+
+    player = React.createRef();
+
+    playAudio() {
+        this.player.current.play();
+        this.setState({
+            checked: !this.state.checked
+        });
+    }
+
     render() {
+
         return (
-            <main className={style.main}>
-                {/* <img className={style.decoration} src={decoration} alt="decoration" />
-                <h2>Hello Awesome App!</h2>
-                <p>To get started edit a file in "./src" and save to reload.</p> */}
+            <>
+                <main className={style.main}>
 
-
-                <Row xs={1} md={5} className="g-4">
-                    {Array.from({ length: 10 }).map((_, idx) => (
-                        <Col>
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src="holder.js/100px180" />
-                                <Card.Body>
-                                    <Card.Title>Card Title</Card.Title>
-                                    <Card.Text>
-                                        Some quick example text to build on the card title and make up the
-                                        bulk of the card's content.
-                                    </Card.Text>
-                                    <Button variant="primary">Go somewhere</Button>
-                                </Card.Body>
+                    <Row xs={1} md={5} className={style.row}>
+                        {db.songs.map((song, idx) => (
+                            <Card key={idx} className={style.card}>
+                                <CardHeader
+                                    title={song.title}
+                                    subheader={song.author} />
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    width="120"
+                                    image={song.image} />
+                                <CardActions disableSpacing>
+                                    <IconButton aria-label="add to favorites">
+                                        <FavoriteIcon />
+                                    </IconButton>
+                                </CardActions>
+                                <div>
+                                    <button className={style.button} onClick={this.playAudio}>
+                                        Play Audio
+                                    </button>
+                                </div>
                             </Card>
-                        </Col>
-                    ))}
-                </Row>
-
-            </main>
+                        ))}
+                    </Row>
+                    <br></br>
+                    {/* {this.checked === true && */}
+                        <div className={style.musicPlayerFooter}>
+                            <audio controls autoPlay ref={this.player} className={style.audio}
+                                style={this.checked === true ? this.mountedStyle : this.unmountedStyle}>
+                                <source src="http://streaming.tdiradio.com:8000/house.mp3" />
+                            </audio></div>
+                    {/* } */}
+                </main>
+                {/* <iframe src="https://open.spotify.com/embed/track/6epn3r7S14KUqlReYr77hA?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" /> */}
+            </>
         );
     }
 }
