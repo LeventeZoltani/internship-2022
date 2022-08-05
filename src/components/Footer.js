@@ -3,10 +3,11 @@ import logo from './logo.png';
 
 import style from './Footer.module.css';
 
-const Footer = () => {
+const Footer = (props) => {
     return (
         <footer className={style.footer}>
-            <img className={style.logo} src={logo} alt="Company Logo"/>
+            <h1>MUSIC@n</h1>
+            {/* <img className={style.logo} src={logo} alt="Company Logo"/> */}
         </footer>
     );
 };

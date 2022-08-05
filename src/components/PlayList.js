@@ -16,69 +16,65 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import {IconButton} from '@mui/material';
 import SlideOrice from './Slide';
 import ScrollListener from './ScrollListener'
+import Container from './Container';
 
-
-class PlayList extends Component {
+export default function PlayList(props) {
 
 
    
 
-    state = {
-        songs: [],
-        played: false,
-    }
+    // state = {
+    //     songs: [],
+    //     played: false,
+    // }
 
-    componentDidMount(){
-        this.getSongs();
-    }
+    // componentDidMount(){
+    //     this.getSongs();
+    // }
 
-    async getSongs(){
+    // async getSongs(){
 
-        const response = await fetch('http://localhost:3000/songs', {
-            method: 'GET'
-        })
-        const data= await response.json();
-        console.log(this.state.songs);
-        this.setState(state => ({ songs: data}));
-    }
+    //     const response = await fetch('http://localhost:3000/songs', {
+    //         method: 'GET'
+    //     })
+    //     const data= await response.json();
+    //     console.log(this.state.songs);
+    //     this.setState(state => ({ songs: data}));
+    // }
 
     
     
-    static defaultProps = {
-        variant: 'dark',
+    // defaultProps = {
+    //     variant: 'dark',
        
-    };
+    // };
 
-    constructor(props) {
-        super(props);
-        this.openPlayer=this.openPlayer.bind(this);
-        // this.handleAddTodo = this.handleAddTodo.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.openPlayer=this.openPlayer.bind(this);
+    //     // this.handleAddTodo = this.handleAddTodo.bind(this);
+    //     // this.handleChange = this.handleChange.bind(this);
+    // }
 
-    getVariant() {
-        return style[this.props.variant];
-    }
+    // getVariant(){
+    //     return style[this.props.variant];
+    // }
 
-    openPlayer(){
+    // openPlayer(){
       
-        console.log("I PLAYED U!!");
-        //this.SlideFromContainer();
+    //     console.log("I PLAYED U!!");
+    //     //this.SlideFromContainer();
         
        
         
-    }
+    // }
 
-    render() {
+    
         return (
             <>
             
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-               {
-                    
-                    this.state.songs.map((song) =>
-
-                       
+               {props.songs.map((song) =>
                         <ListItem key={song.id} alignItems="flex-start" 
                         sx={{width: 500, height: 145,border: 1, borderColor: '#fa227c',borderRadius:5}}>
                             <ListItemAvatar>
@@ -126,18 +122,17 @@ class PlayList extends Component {
             </>
         );
 
-    }
+    
 
 
 
 }
 
-PlayList.propTypes = {
-    variant: PropTypes.oneOf([
-        'dark',
-        'light'
-    ]),
+// PlayList.propTypes = {
+//     variant: PropTypes.oneOf([
+//         'dark',
+//         'light'
+//     ]),
     
-};
+// };
 
-export default PlayList;

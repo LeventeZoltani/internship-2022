@@ -6,7 +6,7 @@ import {TextField }from '@mui/material';
 import songs from './PlayList';
 import PlayList from './PlayList';
 import { Component } from 'react';
-
+import React from 'react';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -50,43 +50,46 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
 
-class MyAutocomplete extends Component{
+  
+
+export default function MyAutocomplete(props){
    
-    state = {
-        songs: [],
-        played: false,
-        titles: [],
-    }
+    // state = {
+    //     songs: [],
+    //     played: false,
+    //     titles: [],
+    // }
 
-    componentDidMount(){
-        this.getSongs();
-        //this.getTitles();
-    }
+    // componentDidMount(){
+    //     this.getSongs();
+    //     //this.getTitles();
+    // }
 
-    async getSongs(){
+    // async getSongs(){
 
-        const response = await fetch('http://localhost:3000/songs', {
-            method: 'GET'
-        })
-        const data= await response.json();
-        console.log(this.state.songs);
+    //     const response = await fetch('http://localhost:3000/songs', {
+    //         method: 'GET'
+    //     })
+    //     const data= await response.json();
+    //     console.log(this.state.songs);
        
 
-        const dataT=[];
-        for(let i=0;i<data.length;i++){
-            //console.log(data[i].title);
-            dataT[i]=data[i].title;
+    //     const dataT=[];
+    //     for(let i=0;i<data.length;i++){
+    //         //console.log(data[i].title);
+    //         dataT[i]=data[i].title;
                   
-        }
-        this.setState(state => ({ songs: data, titles: dataT}));
-    }
+    //     }
+    //     this.setState(state => ({ songs: data, titles: dataT}));
+    // }
   
     // getTitles(){
     //    
     // }
 
-
-      render(){
+        const [value, setValue] = React.useState('');
+        const [inputValue, setInputValue] = React.useState('');
+      
         return(
             <Search>
             <SearchIconWrapper>
@@ -95,13 +98,24 @@ class MyAutocomplete extends Component{
                <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={this.state.titles}
+                  options={props.titles}
                   sx={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="" id="search"  />}
+                  onChange={(event, newValue) => {
+                    console.log(newValue)
+                    setValue(newValue)
+                    props.update(newValue);
+                  }}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    props.update(newInputValue);
+                    setInputValue(newInputValue);
+                    // setValue(newInputValue)
+                    }}
+                    //id="controllable-states-demo"
                 />
                 
                 
             </Search>);
-       }  
+       
 }
-export default MyAutocomplete;

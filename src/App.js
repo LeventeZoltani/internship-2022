@@ -1,14 +1,13 @@
 import React from 'react';
-import Header from './components/Header';
+import Container from './components/Container';
 import Main from './components/Main';
 import Footer from './components/Footer';
+
 
 const App = () => {
     return (
         <>
-            <Header/>
-            <Main/>
-            <Footer/>
+            <Container/>
         </>
     );
 };

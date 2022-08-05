@@ -17,7 +17,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import QueueMusicSharpIcon from '@mui/icons-material/QueueMusicSharp';
 import MusicNoteSharpIcon from '@mui/icons-material/MusicNoteSharp';
 import MyAutocomplete from './MyAutocomplete'
-
+import MySelect from './MySelect';
 // const Header = () => {
 //     return (
 //         <header className={style.header}>
@@ -54,7 +54,7 @@ import MyAutocomplete from './MyAutocomplete'
 const pages = ['Home'];
 const settings = ['Profile', 'Account', 'Favorites', 'Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -168,7 +168,8 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          <MyAutocomplete />
+          <MyAutocomplete titles={props.titles} update={props.update} songs={props.songs}/>
+          <MySelect update={props.update} songs={props.songs}/>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
