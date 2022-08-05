@@ -37,6 +37,7 @@ export default function SongRow(props) {
             </TableCell>
 
             <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{props.song.artist}</Typography></TableCell>
+            <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{props.song.album}</Typography></TableCell>
             <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{props.song.genre}</Typography></TableCell>
             <TableCell className={style.tableCell} align="center"><Typography variant='h6'>{formatDuration(props.song.duration)}</Typography></TableCell>
             <TableCell className={style.tableCell} align="center">

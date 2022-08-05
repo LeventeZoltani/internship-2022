@@ -13,7 +13,8 @@ export default function Main(props) {
                      p: 3,
                      width: { sm: `calc(100% - ${props.drawer.drawerWidth}px)` },
                      marginLeft:{sm:`${props.drawer.drawerWidth}px`, md: `${props.drawer.drawerWidth}px`},
-                     marginTop: 10 
+                     marginTop: 10,
+                     marginBottom: 20 
                 }}
             >
                 {/* {console.log(props.songs)} */}

@@ -29,6 +29,7 @@ export default function SongList(props) {
                                 <Typography variant='h5'>Title</Typography>
                             </TableCell>
                             <TableCell align="center"><Typography variant='h5'>Artist</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='h5'>Album</Typography></TableCell>
                             <TableCell align="center"><Typography variant='h5'>Genre</Typography></TableCell>
                             <TableCell align="center"><Typography variant='h5'>Duration</Typography></TableCell>
                             <TableCell align="center"></TableCell>

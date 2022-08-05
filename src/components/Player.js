@@ -38,6 +38,7 @@ const useAudio = url => {
 
     const toggle = () => setPlaying(!playing);
     const changeSong = (newUrl) => {
+        console.log('change')
         audio.pause();
         setPlaying(false);
         setAudio(new Audio(newUrl));
