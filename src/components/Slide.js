@@ -46,21 +46,22 @@ export default function SlideFromContainer() {
   return (
     <Box
       sx={{
-        height: 400,
+        height: 150,
         width: 350,
         display: 'flex',
         padding: 2,
         borderRadius: 1,
-        bgcolor: (theme) =>
-          theme.palette.mode === 'light' ? 'grey.100' : 'grey.900',
+        // bgcolor: (theme) =>
+        //   theme.palette.mode === 'dark' ? 'grey.100' : 'grey.900',
         overflow: 'hidden',
+        alignSelf: 'center',
       }}
       ref={containerRef}
     >
       <Box sx={{ width: 500 }}>
         <FormControlLabel
           control={<IconButton checked={checked} onClick={handleChange}>
-                      <PlayCircleOutlineIcon sx={{fontSize: 'large'}}>
+                      <PlayCircleOutlineIcon sx={{fontSize: 'large', height: 40, width: 40, color: '#ffffff' }}>
                       </PlayCircleOutlineIcon>
                     </IconButton>  
                   }

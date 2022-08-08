@@ -6,12 +6,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function MySelect(props) {
-  const [genre, setGenre] = React.useState('');
+  const [filter, setFilter] = React.useState('');
   //const [artist, setArtist] = React.useState('');
 
 
   const handleChange = (event) => {
-    setGenre(event.target.value);
+    setFilter(event.target.value);
+    console.log(event.target.value);
+    props.handleFilter(event.target.value);
+    //props.setState({'filter': event.target.value});
     //setArtist(event.target.value);
   };
 
@@ -21,22 +24,18 @@ export default function MySelect(props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Genre</InputLabel>
+        <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={genre}
-          label="Genre"
+          value={filter}
+          label="Filter"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Pop</MenuItem>
-          <MenuItem value={20}>Rock</MenuItem>
-          <MenuItem value={30}>Punk</MenuItem>
-          <MenuItem value={40}>Folk</MenuItem>
-          <MenuItem value={50}>KPop</MenuItem>
-          <MenuItem value={60}>CPop</MenuItem>
-          <MenuItem value={70}>Dance</MenuItem>
-          <MenuItem value={80}>Opera</MenuItem>
+          <MenuItem value={"Title"}>Title</MenuItem>
+          <MenuItem value={"Genre"}>Genre</MenuItem>
+          <MenuItem value={"Artist"}>Artist</MenuItem>
+          <MenuItem value={"Album"}>Album</MenuItem>
         </Select>
       </FormControl>
     </Box>

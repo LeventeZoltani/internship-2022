@@ -7,6 +7,7 @@ import songs from './PlayList';
 import PlayList from './PlayList';
 import { Component } from 'react';
 import React from 'react';
+import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -98,7 +99,7 @@ export default function MyAutocomplete(props){
                <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={props.titles}
+                  options={props.getOptionsByFilter()}
                   sx={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="" id="search"  />}
                   onChange={(event, newValue) => {

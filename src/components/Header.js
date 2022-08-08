@@ -168,8 +168,8 @@ const ResponsiveAppBar = (props) => {
               </Button>
             ))}
           </Box>
-          <MyAutocomplete titles={props.titles} update={props.update} songs={props.songs}/>
-          <MySelect update={props.update} songs={props.songs}/>
+          <MyAutocomplete titles={props.titles} genres={props.genres} artists={props.artists} albums={props.albums} update={props.update} songs={props.songs} getOptionsByFilter={props.getOptionsByFilter}/>
+          <MySelect update={props.update} songs={props.songs} filter={props.filter} handleFilter={props.handleFilter}/>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
