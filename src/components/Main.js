@@ -17,10 +17,12 @@ export default function Main(props) {
                      marginBottom: 20 
                 }}
             >
-                {/* {console.log(props.songs)} */}
                 <SongList 
                     songs={props.songs}
                     handlePlayClick={props.handlePlayClick}
+                    addToFavourites={props.addToFavourites}
+                    removeFromFavourites={props.removeFromFavourites}
+                    favourites={props.favourites}
                 />
             </Box>
         </main>

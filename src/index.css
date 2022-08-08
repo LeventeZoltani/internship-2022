@@ -1,7 +1,7 @@
 :root {
     --primary-color: black;
-    --secondary-color: rgb(27, 23, 23) ;
-    --complementary-color: #edf2f6;
+    --secondary-color: #212121 ;
+    --complementary-color: #aab6fe;
     --button-hover-color: rgb(255, 208, 0);
 
     font-size: 80%;

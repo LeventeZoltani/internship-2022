@@ -9,7 +9,6 @@ import SideNavigationDrawer from './SideNavigationDrawer'
 
 export default class Container extends Component {
     state = {
-
         drawer: {
             drawerWidth: 300,
             mobileOpen: false
@@ -22,10 +21,16 @@ export default class Container extends Component {
         searchInput: '',
         genreInput: '',
         albumInput: '',
-        artistInput: ''
+        artistInput: '',
+        users: [
+            {
+                id: '',
+                name: '',
+                favourites: []
+            }]
     }
     songs = [];
-    baseUrl = 'http://localhost:3000/songs';
+    baseUrl = 'http://localhost:3000';
     genres = [];
     artists = [];
     albums = [];
@@ -38,7 +43,6 @@ export default class Container extends Component {
             }
 
         });
-
     }
 
     constructor(props) {
@@ -50,14 +54,17 @@ export default class Container extends Component {
         this.onChangeArtist = this.onChangeArtist.bind(this);
         this.onChangeGenre = this.onChangeGenre.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.addToFavourites = this.addToFavourites.bind(this);
+        this.removeFromFavourites = this.removeFromFavourites.bind(this);
     }
 
     componentDidMount() {
         this.getSongs();
+        this.getUsers();
     }
 
     getSongs = async () => {
-        const response = await fetch(this.baseUrl);
+        const response = await fetch(`${this.baseUrl}/songs`);
         this.songs = await response.json();
         this.getPropertyValues('genre', this.genres);
         this.getPropertyValues('artist', this.artists);
@@ -68,48 +75,87 @@ export default class Container extends Component {
         }));
     }
 
+    getUsers = async () => {
+        const response = await fetch(`${this.baseUrl}/users`);
+        const users = await response.json();
+        this.setState(() => ({
+            'users': users
+        }));
+    }
+
+    filterHelper(input, newSongs, field) {
+        if (input !== '') {
+            let value = input;
+            if (value !== '') {
+                newSongs = newSongs.filter((song) => {
+                    return song[field] == value;
+                }
+                );
+            }
+        }
+        return newSongs;
+    }
+
+    updateUsers = (newUserData) => {
+        const request = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newUserData)
+        }
+
+        fetch(`${this.baseUrl}/users/${this.state.users[0].id}`, request)
+            .then(() => console.log('UPDATE USERS'))
+            .catch((err) => console.log(err));
+    }
+
+    addToFavourites(songId) {
+
+        if (!this.state.users[0].favourites.includes(songId)) {
+            const newUserData = {
+                id: this.state.users[0].id,
+                name: this.state.users[0].name,
+                favourites: [...this.state.users[0].favourites, songId]
+            }
+            this.setState({
+                users: [newUserData]
+            });
+
+            this.updateUsers(newUserData);
+        }
+    }
+
+    removeFromFavourites(songId) {
+        if (this.state.users[0].favourites.includes(songId)) {
+            const newUserData = {
+                id: this.state.users[0].id,
+                name: this.state.users[0].name,
+                favourites: this.state.users[0].favourites.filter((fav) => fav != songId)
+            }
+
+            console.log(songId, newUserData)
+
+            this.setState({
+                users: [newUserData]
+            });
+
+            this.updateUsers(newUserData);
+        }
+    }
+
     filterBy() {
         let newSongs = this.songs;
         if (this.state.searchInput !== '') {
             let title = this.state.searchInput;
             if (title !== null) {
                 newSongs = newSongs.filter((song) => {
-                    console.log(song.title.toLowerCase().includes(title))
                     return song.title.toLowerCase().includes(title.toLowerCase())
                 }
                 );
             }
         }
-
-        if (this.state.genreInput !== '') {
-            let genre = this.state.genreInput;
-            if (genre !== '') {
-                newSongs = newSongs.filter((song) => {
-                    return song.genre == genre;
-                }
-                );
-            }
-        }
-
-        if (this.state.artistInput !== '') {
-            let artist = this.state.artistInput;
-            if (artist !== '') {
-                newSongs = newSongs.filter((song) => {
-                    return song.artist == artist;
-                }
-                );
-            }
-        }
-
-        if (this.state.albumInput !== '') {
-            let album = this.state.albumInput;
-            if (album !== '') {
-                newSongs = newSongs.filter((song) => {
-                    return song.album == album;
-                }
-                );
-            }
-        }
+        newSongs = this.filterHelper(this.state.genreInput, newSongs, 'genre');
+        newSongs = this.filterHelper(this.state.artistInput, newSongs, 'artist');
+        newSongs = this.filterHelper(this.state.albumInput, newSongs, 'album');
         return newSongs;
     }
 
@@ -141,7 +187,6 @@ export default class Container extends Component {
         this.setState({
             player: { opened, playedSong }
         })
-        // this.setState({ playedSong })
     }
 
     handleDrawerToggle = () => {
@@ -150,13 +195,11 @@ export default class Container extends Component {
         this.setState({
             drawer: {
                 mobileOpen, drawerWidth
-                // 'drawerWidth': this.drawerWidth
             }
         });
     };
 
     handlePlayClick(song) {
-        // console.log(!this.opened, song);    
         this.handlePlayerOpened(!this.opened, song);
     };
 
@@ -179,10 +222,14 @@ export default class Container extends Component {
                 <Main
                     drawer={this.state.drawer}
                     songs={this.filterBy()}
-                    handlePlayClick={this.handlePlayClick} />
+                    handlePlayClick={this.handlePlayClick}
+                    addToFavourites={this.addToFavourites}
+                    removeFromFavourites={this.removeFromFavourites}
+                    favourites={this.state.users[0].favourites}
+                />
                 <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
                     <div>
-                        <Player playedSong={this.state.player.playedSong} />
+                        <Player playedSong={this.state.player.playedSong} songs={this.state.songs} />
                     </div>
                 </Slide>
                 <SideNavigationDrawer drawer={this.state.drawer} handleDrawerToggle={this.handleDrawerToggle} zIndex={5} />

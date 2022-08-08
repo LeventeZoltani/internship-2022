@@ -19,28 +19,32 @@ import Player from './Player';
 export default function SongList(props) {
     return (
         <>
-            <TableContainer component={Paper}>
+            <TableContainer>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell className={style.tableHeader}></TableCell>
                             <TableCell className={style.tableHeader}></TableCell>
                             <TableCell align='left'>
-                                <Typography variant='h5'>Title</Typography>
+                                <Typography color='white' variant='h5'>Title</Typography>
                             </TableCell>
-                            <TableCell align="center"><Typography variant='h5'>Artist</Typography></TableCell>
-                            <TableCell align="center"><Typography variant='h5'>Album</Typography></TableCell>
-                            <TableCell align="center"><Typography variant='h5'>Genre</Typography></TableCell>
-                            <TableCell align="center"><Typography variant='h5'>Duration</Typography></TableCell>
+                            <TableCell align="center"><Typography color='white' variant='h5'>Artist</Typography></TableCell>
+                            <TableCell align="center"><Typography color='white' variant='h5'>Album</Typography></TableCell>
+                            <TableCell align="center"><Typography color='white' variant='h5'>Genre</Typography></TableCell>
+                            <TableCell align="center"><Typography color='white' variant='h5'>Duration</Typography></TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody> 
                         {props.songs.map((song) => (
+                           
                             <SongRow
                                 song={song}
                                 key={song.id}
-                                handlePlayClick={props.handlePlayClick}    
+                                handlePlayClick={props.handlePlayClick}  
+                                addToFavourites = {props.addToFavourites}
+                                removeFromFavourites={props.removeFromFavourites}
+                                favourites={props.favourites}
                             />
                         ))}
                     </TableBody>

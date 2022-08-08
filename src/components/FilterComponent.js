@@ -9,47 +9,44 @@ import styled from '@emotion/styled';
 
 const CssFormControl = styled(FormControl)({
     margin: 20,
-    color: 'white',
+    '& .MuiSelect-nativeInput': {
+        color:'#aab6fe',
+        opacity: '100%',
+        backgroundColor: 'black',
+        border: 'none',
+        padding: '10px',
+        bottom: '8px'
+    },
     '& .MuiOutlinedInput-root': {
-        color: 'white',
+      color: 'white',
     },
     '& label.Mui-focused': {
-        color: 'orange',
+      color: '#aab6fe',
     },
     '& label': {
-        color: 'orange',
-    },
-    '& input.Mui-focused': {
-        color: 'orange',
+      color: '#aab6fe',
     },
     '& .MuiInput-underline:after': {
-        borderBottomColor: '#ffac33',
+      borderBottomColor: '#aab6fe',
     },
     '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'orange',
-            // backgroundColor: 'black',
-            borderRadius: '25px',
-        },
-        '& input': {
-            color: 'orange',
-        },
-        '& input': {
-            color: 'orange',
-        },
-        '&:hover fieldset': {
-            borderColor: '#ffac33',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'orange',
-            color: 'white'
-        },
+      '& fieldset': {
+        borderColor: '#aab6fe',
+        // backgroundColor: 'black',
+        borderRadius: '25px',
+      },
+      '&:hover fieldset': {
+        borderColor: '#aab6fe',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#aab6fe',
+        color: 'white'
+      },
     },
 });
 
 export default function FilterComponent(props) {
     const [genre, setGenre] = useState('');
-    // console.log(props.artists);
     return (
 
         <Box sx={{ minWidth: 120 }}>
@@ -74,7 +71,6 @@ export default function FilterComponent(props) {
                     {
 
                         props.array.map((genre, index) => {
-                            { console.log(genre, index); }
                             return (
                                 <MenuItem key={index} value={genre}>
                                     {genre}
@@ -82,9 +78,6 @@ export default function FilterComponent(props) {
                             )
                         })
                     }
-                    {/* <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
             </CssFormControl>
         </Box>

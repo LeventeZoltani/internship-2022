@@ -10,31 +10,31 @@ const CssTextField = styled(TextField)({
     color: 'white',
   },
   '& label.Mui-focused': {
-    color: 'orange',
+    color: '#aab6fe',
   },
   '& label': {
-    color: 'orange',
+    color: '#aab6fe',
   },
   '& input.Mui-focused': {
     color: 'white',
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: '#ffac33',
+    borderBottomColor: '#aab6fe',
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: 'orange',
+      borderColor: '#aab6fe',
       // backgroundColor: 'black',
       borderRadius: '25px',
     },
     '& input': {
-      color: 'orange',
+      color: '#aab6fe',
     },
     '&:hover fieldset': {
-      borderColor: '#ffac33',
+      borderColor: '#aab6fe',
     },
     '&.Mui-focused fieldset': {
-      borderColor: 'orange',
+      borderColor: '#aab6fe',
       color: 'white'
     },
   },
@@ -47,9 +47,7 @@ export default function AutocompleteSearch(props) {
   return (
     <div>
       <Autocomplete
-        // value={value}
         onChange={(event, newValue) => {
-          console.log(newValue)
           setValue(newValue)
           props.update({
             filteredBy: 'search',
@@ -63,23 +61,15 @@ export default function AutocompleteSearch(props) {
             value: newInputValue
           });
           setInputValue(newInputValue);
-          // setValue(newInputValue)
         }}
         id="controllable-states-demo"
         options={props.songs.map((song) => song.title)}
         sx={{
-          // backgroundColor: 'black',
           color: 'white',
         }}
-
-        // sm={{ width: 300, backgroundColor:'white' }}
-        // md={{ width: 500, backgroundColor:'white' }}
-        renderInput={(params) => <CssTextField {...params} label="Song title" InputProps={{ style: { color: 'white' } }}></CssTextField>}
+        renderInput={(params) => <CssTextField {...params} label="Song title"></CssTextField>}
 
       />
-      {/* <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                <SearchIcon color='info' fontSize='large'/>
-              </IconButton> */}
     </div>
   );
 }

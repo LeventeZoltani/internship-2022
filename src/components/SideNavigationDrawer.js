@@ -23,9 +23,9 @@ function SideNavigationDrawer(props) {
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon >
-                                {index % 2 === 1 ? <FavoriteRoundedIcon /> : <HomeRoundedIcon />}
+                                {index % 2 === 1 ? <FavoriteRoundedIcon sx={{color:'#aab6fe'}}/> : <HomeRoundedIcon sx={{color:'#aab6fe'}}/>}
                             </ListItemIcon>
-                            <ListItemText><Typography variant='h5'>{text}</Typography></ListItemText>
+                            <ListItemText><Typography variant='h5' color='#aab6fe'>{text}</Typography></ListItemText>
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -44,6 +44,7 @@ function SideNavigationDrawer(props) {
             }}
             aria-label="mailbox folders"
             zIndex={10}
+            className={style.drawer}
         >
             {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
@@ -51,24 +52,25 @@ function SideNavigationDrawer(props) {
                 container={container}
                 variant="temporary"
                 open={props.drawer.mobileOpen}
+                // onChange={props.handleDrawerToggle}
                 onClose={props.handleDrawerToggle}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, backgroundColor:'black' },
 
                 }}
             >
                 {drawer}
             </Drawer>
             <Drawer
-                className={style.drawer}
+                className='drawer'
                 variant="permanent"
                 sx={{
                     display: { xs: 'none', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, backgroundColor:'black' },
                 }}
                 open
             >
