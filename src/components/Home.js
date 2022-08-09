@@ -1,11 +1,11 @@
 import React from 'react'
 import SongList from './SongList'
-import style from './Main.module.css';
+import style from './Home.module.css';
 import { Box } from '@mui/system';
 
-export default function Main(props) {
+export default function Home(props) {
     return (
-        <main className={style.main}>
+       
             <Box
                 component="main"
                 sx={{
@@ -25,6 +25,5 @@ export default function Main(props) {
                     favourites={props.favourites}
                 />
             </Box>
-        </main>
     )
 }

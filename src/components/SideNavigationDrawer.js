@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
+import { Link } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -19,16 +20,27 @@ function SideNavigationDrawer(props) {
         <div className={style.drawer}>
             <Toolbar />
             <List>
-                {['Home', 'Favourites'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
+                <ListItem disablePadding>
+                    <Link to="/home">
                         <ListItemButton>
                             <ListItemIcon >
-                                {index % 2 === 1 ? <FavoriteRoundedIcon sx={{color:'#aab6fe'}}/> : <HomeRoundedIcon sx={{color:'#aab6fe'}}/>}
+                                <HomeRoundedIcon sx={{ color: '#aab6fe' }} />
                             </ListItemIcon>
-                            <ListItemText><Typography variant='h5' color='#aab6fe'>{text}</Typography></ListItemText>
+                            <ListItemText><Typography variant='h5' color='#aab6fe'>Home</Typography></ListItemText>
                         </ListItemButton>
-                    </ListItem>
-                ))}
+                    </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                    <Link to="/favourites">
+                        <ListItemButton>
+                            <ListItemIcon >
+                                <FavoriteRoundedIcon sx={{ color: '#aab6fe' }} />
+                            </ListItemIcon>
+                            <ListItemText><Typography variant='h5' color='#aab6fe'>Favourites</Typography></ListItemText>
+                        </ListItemButton>
+                    </Link>
+                </ListItem>
+
             </List>
         </div>
     );
@@ -61,8 +73,8 @@ function SideNavigationDrawer(props) {
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, bgcolor:'black' },
-                    '& .MuiBackdrop-root': {bgcolor: '#aab6fe54'}
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, bgcolor: 'black' },
+                    '& .MuiBackdrop-root': { bgcolor: '#aab6fe54' }
 
                 }}
             >
@@ -73,7 +85,7 @@ function SideNavigationDrawer(props) {
                 variant="permanent"
                 sx={{
                     display: { xs: 'none', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, backgroundColor:'black' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, backgroundColor: 'black' },
                 }}
                 open
             >
