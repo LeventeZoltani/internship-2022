@@ -15,7 +15,8 @@ const CssFormControl = styled(FormControl)({
         backgroundColor: 'black',
         border: 'none',
         padding: '10px',
-        bottom: '8px'
+        bottom: '8px',
+        margin: '0 10px'
     },
     '& .MuiOutlinedInput-root': {
       color: 'white',
@@ -32,8 +33,7 @@ const CssFormControl = styled(FormControl)({
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
         borderColor: '#aab6fe',
-        // backgroundColor: 'black',
-        borderRadius: '25px',
+        // borderRadius: '25px',
       },
       '&:hover fieldset': {
         borderColor: '#aab6fe',

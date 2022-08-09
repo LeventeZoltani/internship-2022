@@ -52,14 +52,17 @@ function SideNavigationDrawer(props) {
                 container={container}
                 variant="temporary"
                 open={props.drawer.mobileOpen}
-                // onChange={props.handleDrawerToggle}
                 onClose={props.handleDrawerToggle}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}
+                BackdropProps={{
+                    backgroundColor: 'white'
+                }}
                 sx={{
                     display: { xs: 'block', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, backgroundColor:'black' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawer.drawerWidth, bgcolor:'black' },
+                    '& .MuiBackdrop-root': {bgcolor: '#aab6fe54'}
 
                 }}
             >

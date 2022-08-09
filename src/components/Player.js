@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import PauseRounded from '@mui/icons-material/PauseRounded';
@@ -35,7 +35,6 @@ const CoverImage = ({ img, title }) => (
 
 const Player = (props) => {
 
-    const [trackIndex, setTrackIndex] = useState(props.songs.findIndex(el => el.id === props.playedSong.id));
     const [trackProgress, setTrackProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -50,7 +49,7 @@ const Player = (props) => {
         clearInterval(intervalRef.current);
 
         intervalRef.current = setInterval(() => {
-                setTrackProgress(audioRef.current.currentTime);
+            setTrackProgress(audioRef.current.currentTime);
         }, [1000]);
     };
 
@@ -70,10 +69,7 @@ const Player = (props) => {
     };
 
     useEffect(() => {
-        setTrackIndex(props.songs.findIndex(el => el.id === props.playedSong.id))
-    }, [props.playedSong]);
-
-    useEffect(() => {
+        // set the current audio to play/pause
         if (isPlaying) {
             audioRef.current.play();
             startTimer();
@@ -97,7 +93,7 @@ const Player = (props) => {
             // Set the isReady ref as true for the next pass
             isReady.current = true;
         }
-    }, [trackIndex]);
+    }, [props.playedSong]);
 
     useEffect(() => {
         // Pause and clean up on unmount
@@ -116,8 +112,8 @@ const Player = (props) => {
                             <CoverImage img={props.playedSong.imageUrl} title={props.playedSong.title} />
                         </Grid>
                         <Grid item xs={2} sm={4} md={2} lg={2} paddingLeft='10px'>
-                            <Typography color='white' variant='h3' align='left'>{props.playedSong.title}</Typography>
-                            <Typography color='white' variant='h5' align='left'>{props.playedSong.artist}</Typography>
+                            <Typography color='white' variant='h4' align='left'>{props.playedSong.title}</Typography>
+                            <Typography color='white' variant='h6' align='left'>{props.playedSong.artist}</Typography>
                         </Grid>
 
 
@@ -222,12 +218,17 @@ const Player = (props) => {
                                 }}
                             >
                                 <TinyText>{formatDuration(trackProgress)}</TinyText>
-                                <TinyText>{ duration ? `- ${formatDuration(duration - trackProgress)}` : '0:00'}</TinyText>
+                                <TinyText>{duration ? `- ${formatDuration(duration - trackProgress)}` : '0:00'}</TinyText>
                             </Box>
                         </Grid>
-                        {/* <Grid item xs={4} sm={4} md={1} lg={1}>
-                            {/* <HeartButton ></HeartButton> */}
-                        {/* </Grid> */}
+                        {console.log(props)}
+                        <Grid item xs={4} sm={4} md={1} lg={1} marginLeft={10}>
+                            <HeartButton
+                                removeFromFavourites={props.removeFromFavourites}
+                                addToFavourites={props.addToFavourites}
+                                song={props.playedSong}
+                                favourites={props.favourites} />
+                        </Grid>
                     </Grid>
                 </Paper>
             </Box></>

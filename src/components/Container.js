@@ -229,7 +229,12 @@ export default class Container extends Component {
                 />
                 <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
                     <div>
-                        <Player playedSong={this.state.player.playedSong} songs={this.state.songs} />
+                        <Player
+                            playedSong={this.state.player.playedSong}
+                            addToFavourites={this.addToFavourites}
+                            removeFromFavourites={this.removeFromFavourites}
+                            favourites={this.state.users[0].favourites}
+                        />
                     </div>
                 </Slide>
                 <SideNavigationDrawer drawer={this.state.drawer} handleDrawerToggle={this.handleDrawerToggle} zIndex={5} />
