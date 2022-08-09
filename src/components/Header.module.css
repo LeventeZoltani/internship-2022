@@ -36,6 +36,7 @@
     /* padding-left:20px; */
 }
 
+
 .searchInput{
     height: 25px;
     width:200px;
@@ -48,7 +49,13 @@
     margin-left:10px;
 }
 
-
+.login a{
+    font-size:18px;
+    text-decoration: none;
+    text-transform: lowercase;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 700;
+}
 
 .secondaryColor {
     color: var(--secondary-color);

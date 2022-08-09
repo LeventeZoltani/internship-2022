@@ -9,14 +9,13 @@ class Main extends Component {
 
     state = {
         currentSong: {},
-        openedPlayer: false,
+        isOpen: false,
     }
 
-    mountedStyle = { animation: "inAnimation 450ms ease-in" };
+    mountedStyle = { display: "block" };
 
     unmountedStyle = {
-        animation: "outAnimation 470ms ease-out",
-        animationFillMode: "forwards"
+        display: 'none',
     };
 
     constructor(props) {
@@ -29,16 +28,17 @@ class Main extends Component {
         let song = this.props.getSongById(id);
         this.setState({
             currentSong: song,
-            openedPlayer: true,
+            isOpen: true,
         })
         console.log("opened player: " + this.state.openedPlayer);
     }
 
     closePlayer() {
         this.setState({
-            openedPlayer: false
+            isOpen: false
         })
     }
+
 
     render() {
 
@@ -56,13 +56,12 @@ class Main extends Component {
                         />
                     )) : null}
                 </ul>
-                {this.state.openedPlayer === true &&
+                {this.state.isOpen  &&
                     <MusicPlayer
-                        // sx={{ display: this.state.openedPlayer ? 'block' : 'none' }}
                         title={this.state.currentSong.title}
                         artist={this.state.currentSong.artist}
                         musicSrc={this.state.currentSong.musicSrc}
-                        openedPlayer={this.state.openedPlayer}
+                        openedPlayer={this.state.isOpen}
                         closePlayer={this.closePlayer}
                         mountedStyle={this.mountedStyle}
                         unmountedStyle={this.unmountedStyle}

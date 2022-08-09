@@ -1,0 +1,14 @@
+.login{
+    color:black;
+    margin-top:100px;
+    font-size:20px;
+    display: block;
+}
+
+.login h1{
+    color:black;
+}
+
+.error{
+    color:red;
+}

@@ -8,22 +8,13 @@ import { IconButton } from '@mui/material';
 
 export default class MusicPlayer extends Component {
 
-    // constructor(props) {
-    //     super(props);
-    // }
-
     render() {
         return (
-            <div className={style.musicPlayerFooter}
-                style={this.props.openedPlayer === true ? this.props.mountedStyle : this.props.unmountedStyle}
-            >
-                {/* {this.props.artist} - {this.props.title} */}
+            <div className={style.musicPlayerFooter}>
                 <iframe
                     src={this.props.musicSrc}
-                    className={style.player}
+                    className={`${this.props.openedPlayer && style.opened} ${style.player}`}
                     title="song"
-                    // src="https://open.spotify.com/embed/track/7Fg4jpwpkdkGCvq1rrXnvx?utm_source=generator&theme=0" 
-                    // width="100%" height="100%" 
                     frameBorder="0" allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
                 </iframe>
@@ -32,7 +23,7 @@ export default class MusicPlayer extends Component {
                     Your browser does not support the audio element.
                 </audio> */}
                 <IconButton onClick={this.props.closePlayer}>
-                    <CloseIcon sx={{ color: 'white' }} />
+                    <CloseIcon sx={{ color: 'black' }} />
                 </IconButton>
             </div>
         )

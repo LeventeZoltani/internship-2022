@@ -1,10 +1,13 @@
 import { React } from 'react';
-
+import {
+    BrowserRouter as Router,
+} from "react-router-dom";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
 
 import style from './Header.module.css';
 
@@ -12,7 +15,7 @@ const Header = (props) => {
 
     return (
         <header className={style.header}>
-            <h1><a href="">Music App!</a></h1>
+            <h1><a href="/">Music App!</a></h1>
             <div className={style.search} >
                 <p className={style.searchSong}>Search song... </p>
                 <input
@@ -62,6 +65,11 @@ const Header = (props) => {
                     )) : null}
                 </select> */}
             </div>
+            <Router>
+                <div className={style.login}>
+                    <Button variant="outlined"><a href="/login">Log in!</a></Button>
+                </div>
+            </Router>
         </header>
     );
 };
