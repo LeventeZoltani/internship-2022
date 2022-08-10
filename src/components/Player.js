@@ -221,13 +221,12 @@ const Player = (props) => {
                                 <TinyText>{duration ? `- ${formatDuration(duration - trackProgress)}` : '0:00'}</TinyText>
                             </Box>
                         </Grid>
-                        {console.log(props)}
                         <Grid item xs={4} sm={4} md={1} lg={1} marginLeft={10}>
                             <HeartButton
                                 removeFromFavourites={props.removeFromFavourites}
                                 addToFavourites={props.addToFavourites}
                                 song={props.playedSong}
-                                favourites={props.favourites} />
+                                favourites={props.user.favourites} />
                         </Grid>
                     </Grid>
                 </Paper>

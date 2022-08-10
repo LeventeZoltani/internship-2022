@@ -1,14 +1,15 @@
 import { Slide } from '@mui/material'
 import React, { Component } from 'react'
 import Header from './Header'
-import Home from './Home'
+import Main from './Main'
 import Player from './Player'
 import SideNavigationDrawer from './SideNavigationDrawer'
 import {
     BrowserRouter as Router,
     Routes,
     Route,
-    Navigate
+    Navigate,
+    useLocation
 } from "react-router-dom";
 
 import style from './Container.module.css'
@@ -41,22 +42,17 @@ export default class Container extends Component {
                 },
                 favourites: []
             }],
-        user:  {
-            id: "",
-            info: {
-                username: "",
-                password: ""
-            },
-            favourites: []
-        },
+        user: null,
         isLoggedIn: false,
+        validLogin: true,
+        favouriteSongs: []
     }
     songs = [];
     baseUrl = 'http://localhost:3000';
     genres = [];
     artists = [];
     albums = [];
-    location = window.location.pathname;
+    favouriteSongs = [];
 
 
     getPropertyValues = (property, array) => {
@@ -81,7 +77,9 @@ export default class Container extends Component {
         this.addToFavourites = this.addToFavourites.bind(this);
         this.removeFromFavourites = this.removeFromFavourites.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
         this.validate = this.validate.bind(this);
+        this.getFavouriteSongs = this.getFavouriteSongs.bind(this);
     }
 
     componentDidMount() {
@@ -93,13 +91,21 @@ export default class Container extends Component {
                 isLoggedIn: true
             });
         }
-        // this.setState({
-        //     user: user
-        // });
+        this.setState({
+            user: user
+        });
+
+
     }
 
-    componentWillUnmount() {
-        localStorage.clear();
+    getFavouriteSongs() {
+        const favourites = this.state.user.favourites.map((id) =>
+            this.state.songs.filter((song) => song.id == id)
+        )
+
+        this.setState({
+            favouriteSongs: favourites.flat()
+        })
     }
 
     getSongs = async () => {
@@ -113,7 +119,7 @@ export default class Container extends Component {
             'songs': this.songs
         }));
     }
-    // TODO: to get users based who is logged in
+
     getUsers = async () => {
         const response = await fetch(`${this.baseUrl}/users`);
         const users = await response.json();
@@ -135,7 +141,6 @@ export default class Container extends Component {
         return newSongs;
     }
 
-    // TODO: UPDATE just the user who is logged in
     updateUsers = (newUserData) => {
         const request = {
             method: 'PUT',
@@ -146,13 +151,14 @@ export default class Container extends Component {
         fetch(`${this.baseUrl}/users/${this.state.user.id}`, request)
             .then(() => console.log('UPDATE USERS'))
             .catch((err) => console.log(err));
+
+        // this.getFavouriteSongs();
     }
 
     validate(username, password) {
         const userIndex = this.state.users.findIndex((user) => user.info.username === username && user.info.password === password);
 
         if (userIndex >= 0) {
-            console.log('Valid', this.state.users[userIndex]);
             this.setState({
                 user: this.state.users[userIndex]
             });
@@ -160,17 +166,34 @@ export default class Container extends Component {
             this.setState({
                 isLoggedIn: true,
             })
+            this.setState({
+                validLogin: true,
+            })
         } else {
-            console.log('Not Valid :/');
+            this.setState({
+                isLoggedIn: false,
+            })
+            this.setState({
+                validLogin: false,
+            })
         }
     }
 
     handleLoginClick(user) {
-        this.validate(user.username, user.password)
+        this.validate(user.username, user.password);
+    }
+
+    handleLogoutClick() {
+        this.setState({
+            user: null
+        });
+        localStorage.removeItem('user');
+        this.setState({
+            isLoggedIn: false,
+        })
     }
 
     addToFavourites(songId) {
-
         if (!this.state.user.favourites.includes(songId)) {
             const newUserData = {
                 id: this.state.user.id,
@@ -178,7 +201,8 @@ export default class Container extends Component {
                     username: this.state.user.info.username,
                     password: this.state.user.info.password
                 },
-                favourites: [...this.state.user.favourites, songId]
+                favourites: [...this.state.user.favourites, songId],
+                imageUrl: this.state.user.imageUrl
             }
             this.setState({
                 user: newUserData
@@ -189,7 +213,6 @@ export default class Container extends Component {
     }
 
     removeFromFavourites(songId) {
-        console.log(this.state.user.favourites);
         if (this.state.user.favourites.includes(songId)) {
             const newUserData = {
                 id: this.state.user.id,
@@ -197,10 +220,9 @@ export default class Container extends Component {
                     username: this.state.user.info.username,
                     password: this.state.user.info.password
                 },
-                favourites: this.state.user.favourites.filter((fav) => fav !== songId)
+                favourites: this.state.user.favourites.filter((fav) => fav !== songId),
+                imageUrl: this.state.user.imageUrl
             }
-
-            console.log(songId, newUserData)
 
             this.setState({
                 user: newUserData
@@ -212,6 +234,13 @@ export default class Container extends Component {
 
     filterBy() {
         let newSongs = this.songs;
+        const location = window.location.pathname;
+
+        if (location === '/favourites') {
+            newSongs = this.state.favouriteSongs;
+        }
+
+
         if (this.state.searchInput !== '') {
             let title = this.state.searchInput;
             if (title !== null) {
@@ -275,38 +304,16 @@ export default class Container extends Component {
         return (
             <>
                 <Router>
-                    {/* <Routes> */}
-                    {/* {console.log(this.location)} */}
-                    {/* {this.location !== '/' && this.state.isLoggedIn ? ( */}
-                    <React.Fragment>
-                        {/* <Header
-                                drawer={this.state.drawer}
-                                handleDrawerToggle={this.handleDrawerToggle}
-                                onChangeAlbum={this.onChangeAlbum}
-                                onChangeArtist={this.onChangeArtist}
-                                onChangeGenre={this.onChangeGenre}
-                                onChangeSearch={this.onChangeSearch}
-                                songs={this.filterBy()}
-                                genres={this.genres}
-                                artists={this.artists}
-                                albums={this.albums}
-                            /> */}
-                    </React.Fragment>
-                    {/* ) : <></>
-                    } */}
-
-
                     <Routes>
                         <Route exact path="/" element={
                             !this.state.isLoggedIn ? (
                                 <main className={style.main}>
-                                    <Login handleLoginClick={this.handleLoginClick} />
+                                    <Login handleLoginClick={this.handleLoginClick} validLogin={this.state.validLogin} />
                                 </main>) : (<Navigate to="/home" />)
 
                         } />
-                        {    console.log(this.state.user)}
                         <Route exact path="/home" element={
-                            
+
                             <RequireAuth isLoggedIn={this.state.isLoggedIn}>
                                 <Header
                                     drawer={this.state.drawer}
@@ -319,15 +326,17 @@ export default class Container extends Component {
                                     genres={this.genres}
                                     artists={this.artists}
                                     albums={this.albums}
+                                    user={this.state.user}
                                 />
                                 <main className={style.main}>
-                                    <Home
+                                    <Main
                                         drawer={this.state.drawer}
                                         songs={this.filterBy()}
                                         handlePlayClick={this.handlePlayClick}
                                         addToFavourites={this.addToFavourites}
                                         removeFromFavourites={this.removeFromFavourites}
-                                        favourites={this.state.user.favourites}
+                                        user={this.state.user}
+                                        getFavouriteSongs={this.getFavouriteSongs}
                                     />
                                 </main>
                                 <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
@@ -336,16 +345,65 @@ export default class Container extends Component {
                                             playedSong={this.state.player.playedSong}
                                             addToFavourites={this.addToFavourites}
                                             removeFromFavourites={this.removeFromFavourites}
-                                            favourites={this.state.user.favourites} />
+                                            user={this.state.user} />
                                     </div>
                                 </Slide>
-                                <SideNavigationDrawer drawer={this.state.drawer} handleDrawerToggle={this.handleDrawerToggle} zIndex={-1} />
+                                <SideNavigationDrawer
+                                    drawer={this.state.drawer}
+                                    handleDrawerToggle={this.handleDrawerToggle}
+                                    handleLogoutClick={this.handleLogoutClick}
+                                    zIndex={-1} />
 
                             </RequireAuth>
                         }>
 
                         </Route>
-                        <Route exact path="/favourites" element={<div>Hello</div>} />
+                        <Route exact path="/favourites" element={
+                            <RequireAuth isLoggedIn={this.state.isLoggedIn}>
+                                <Header
+                                    drawer={this.state.drawer}
+                                    handleDrawerToggle={this.handleDrawerToggle}
+                                    onChangeAlbum={this.onChangeAlbum}
+                                    onChangeArtist={this.onChangeArtist}
+                                    onChangeGenre={this.onChangeGenre}
+                                    onChangeSearch={this.onChangeSearch}
+                                    songs={this.filterBy()}
+                                    genres={this.genres}
+                                    artists={this.artists}
+                                    albums={this.albums}
+                                    user={this.state.user}
+                                />
+
+                                <main className={style.main}>
+                                    <Main
+                                        drawer={this.state.drawer}
+                                        songs={this.filterBy()}
+                                        handlePlayClick={this.handlePlayClick}
+                                        addToFavourites={this.addToFavourites}
+                                        removeFromFavourites={this.removeFromFavourites}
+                                        user={this.state.user}
+                                        getFavouriteSongs={this.getFavouriteSongs}
+                                    />
+                                </main>
+
+                                <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
+                                    <div>
+                                        <Player
+                                            playedSong={this.state.player.playedSong}
+                                            addToFavourites={this.addToFavourites}
+                                            removeFromFavourites={this.removeFromFavourites}
+                                            user={this.state.user} />
+                                    </div>
+                                </Slide>
+                                <SideNavigationDrawer
+                                    drawer={this.state.drawer}
+                                    handleDrawerToggle={this.handleDrawerToggle}
+                                    handleLogoutClick={this.handleLogoutClick}
+                                    zIndex={-1} />
+
+                            </RequireAuth>
+
+                        } />
                         <Route exact path="*" element={
                             <main>
                                 <NotFound />
@@ -353,24 +411,6 @@ export default class Container extends Component {
                         } />
 
                     </Routes>
-
-
-                    {/* {this.location !== '/' && this.state.isLoggedIn ? (
-                        <React.Fragment>
-                            <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
-                                <div>
-                                    <Player
-                                        playedSong={this.state.player.playedSong}
-                                        addToFavourites={this.addToFavourites}
-                                        removeFromFavourites={this.removeFromFavourites}
-                                        favourites={this.state.users[0].favourites} />
-                                </div>
-                            </Slide><SideNavigationDrawer drawer={this.state.drawer} handleDrawerToggle={this.handleDrawerToggle} zIndex={5} />
-                        </React.Fragment>
-                    ) : <></>
-                    } */}
-
-                    {/* </Routes> */}
                 </Router>
             </>
         )

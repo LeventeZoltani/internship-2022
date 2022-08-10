@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,11 +12,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import style from './SideNavigationDrawer.module.css'
 
 
 function SideNavigationDrawer(props) {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        navigate("/", { replace: true });
+        return props.handleLogoutClick();
+    }
+
     const drawer = (
+       
         <div className={style.drawer}>
             <Toolbar />
             <List>
@@ -40,7 +48,14 @@ function SideNavigationDrawer(props) {
                         </ListItemButton>
                     </Link>
                 </ListItem>
-
+                <ListItem disablePadding onClick={handleLogout}>
+                    <ListItemButton>
+                        <ListItemIcon >
+                            <LogoutRoundedIcon sx={{ color: '#aab6fe' }} />
+                        </ListItemIcon>
+                        <ListItemText><Typography variant='h5' color='#aab6fe'>Logout</Typography></ListItemText>
+                    </ListItemButton>
+                </ListItem>
             </List>
         </div>
     );
@@ -67,9 +82,6 @@ function SideNavigationDrawer(props) {
                 onClose={props.handleDrawerToggle}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
-                }}
-                BackdropProps={{
-                    backgroundColor: 'white'
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'block' },

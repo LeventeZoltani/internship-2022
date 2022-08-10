@@ -8,7 +8,6 @@ import AutocompleteSearch from './AutocompleteSearch';
 import FilterComponent from './FilterComponent';
 
 const Header = (props) => {
-
     return (
         <AppBar
             position="fixed"
@@ -42,7 +41,7 @@ const Header = (props) => {
                     </Grid><Grid item xs={0.5} sm={2} md={2}>
                         <FilterComponent update={props.onChangeGenre} array={props.genres} label={'genre'} />
                     </Grid><Grid item marginRight={5}>
-                        <Avatar></Avatar>
+                        <Avatar src={props.user.imageUrl}></Avatar>
                     </Grid>
                 </Grid>
             </Toolbar>

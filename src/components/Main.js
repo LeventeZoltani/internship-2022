@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SongList from './SongList'
-import style from './Home.module.css';
+import style from './Main.module.css';
 import { Box } from '@mui/system';
+import { useLocation } from 'react-router-dom';
 
-export default function Home(props) {
+export default function Main(props) {
+    // const [songs, setSongs] = useState([]);
+    const location = useLocation();
+
+    useEffect(() => {
+        // if(location.pathname === '/favourites') {
+            props.getFavouriteSongs();
+        // }
+           
+    }, [location.pathname])
+
+    useEffect(() => {
+        if(location.pathname === '/favourites') {
+            props.getFavouriteSongs();
+       }
+    }, [props.user.favourites])
+
     return (
        
             <Box
@@ -22,7 +39,7 @@ export default function Home(props) {
                     handlePlayClick={props.handlePlayClick}
                     addToFavourites={props.addToFavourites}
                     removeFromFavourites={props.removeFromFavourites}
-                    favourites={props.favourites}
+                    favourites={props.user.favourites}
                 />
             </Box>
     )
