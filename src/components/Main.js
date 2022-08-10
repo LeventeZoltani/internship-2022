@@ -5,6 +5,7 @@ import SongListElement from './SongListElement';
 import MusicPlayer from './MusicPlayer';
 
 
+
 class Main extends Component {
 
     state = {
@@ -45,7 +46,7 @@ class Main extends Component {
         return (
             <main className={style.main}>
                 <ul>
-                    {Array.isArray(this.props.songs) ? this.props.songs.map(song => (
+                    {/* {Array.isArray(this.props.songs) ? this.props.songs.map(song => (
                         <SongListElement
                             key={song.id}
                             id={song.id}
@@ -53,6 +54,22 @@ class Main extends Component {
                             artist={song.artist}
                             imageSrc={song.imageSrc}
                             currentSongChanger={this.setCurrentSong}
+                            handleLikeSong={this.props.handleLikeSong}
+                            handleDislikeSong={this.props.handleDislikeSong}
+                            isSongLiked={this.props.isSongLiked(song.id)}
+                        />
+                    )) : null} */}
+                    {Array.isArray(this.props.songs) && this.props.songs !== null ? this.props.songs.map(song => (
+                        <SongListElement
+                            key={song.id}
+                            id={song.id}
+                            title={song.title}
+                            artist={song.artist}
+                            imageSrc={song.imageSrc}
+                            currentSongChanger={this.setCurrentSong}
+                            handleLikeSong={this.props.handleLikeSong}
+                            handleDislikeSong={this.props.handleDislikeSong}
+                            isSongLiked={this.props.isSongLiked(song.id)}
                         />
                     )) : null}
                 </ul>

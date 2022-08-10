@@ -58,16 +58,13 @@ const Header = (props) => {
                         <MenuItem value={30}>Thirty</MenuItem> */}
                     </Select>
                 </FormControl>
-                {/* <select className={style.genreSelect} defaultValue="all">
-                    <option value="all">Select genre...</option>
-                    {Array.isArray(props.genres) ? props.genres.map(genre => (
-                        <option key={genre} value={genre}>{genre}</option>
-                    )) : null}
-                </select> */}
             </div>
             <Router>
                 <div className={style.login}>
-                    <Button variant="outlined"><a href="/login">Log in!</a></Button>
+                    {localStorage.getItem("isLoggedIn") === 'false' &&
+                        <Button variant="outlined"><a href="/login">Log in!</a></Button>}
+                    {localStorage.getItem("isLoggedIn")  === 'true' &&
+                        <Button variant="outlined"><a href="/login">Logged in as {localStorage.getItem("username")}</a></Button>}
                 </div>
             </Router>
         </header>
