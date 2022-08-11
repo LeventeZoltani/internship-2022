@@ -22,3 +22,19 @@
     width: 50%;
     height: 10px;
 }
+
+.button {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+    width: 8rem;
+    height: 3rem;
+  }
+  
+.button:hover {background-color: #e7e7e7;}
+
+.link {
+    width: 5rem;
+    height: 3rem;
+    text-size-adjust: 10px;
+}
