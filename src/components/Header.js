@@ -18,6 +18,12 @@ import QueueMusicSharpIcon from '@mui/icons-material/QueueMusicSharp';
 import MusicNoteSharpIcon from '@mui/icons-material/MusicNoteSharp';
 import MyAutocomplete from './MyAutocomplete'
 import MySelect from './MySelect';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 // const Header = () => {
 //     return (
 //         <header className={style.header}>
@@ -50,8 +56,8 @@ import MySelect from './MySelect';
 
 
 
-
-const pages = ['Home'];
+const route="/";
+const pages = ['Home','LogIn','CreateAccount'];
 const settings = ['Profile', 'Account', 'Favorites', 'Logout'];
 
 const ResponsiveAppBar = (props) => {
@@ -67,6 +73,7 @@ const ResponsiveAppBar = (props) => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    console.log("Something happened at click")
   };
 
   const handleCloseUserMenu = () => {
@@ -76,6 +83,7 @@ const ResponsiveAppBar = (props) => {
   //const options = PlayList.getSongs();
 
   return (
+   
     <AppBar position="static" sx={{backgroundColor: '#fa227c'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -129,9 +137,11 @@ const ResponsiveAppBar = (props) => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}
-                sx={{
-                  size:"large"
-                }}>
+
+                  sx={{
+                    size:"large"
+                  }}>
+                   
                   <Typography textAlign="center" variant="h1">{page}</Typography>
                 </MenuItem>
               ))}
@@ -164,7 +174,9 @@ const ResponsiveAppBar = (props) => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block', fontSize: 'large' }}
               >
-                {page}
+              
+              <a href={route+page}>{page}</a>
+                
               </Button>
             ))}
           </Box>
@@ -203,6 +215,8 @@ const ResponsiveAppBar = (props) => {
         </Toolbar>
       </Container>
     </AppBar>
+   
+   
   );
 };
 export default ResponsiveAppBar;

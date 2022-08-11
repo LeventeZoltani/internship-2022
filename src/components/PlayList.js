@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import { Slide, Typography } from '@mui/material';
 import { Divider } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import {IconButton} from '@mui/material';
 import SlideOrice from './Slide';
@@ -118,7 +119,7 @@ export default function PlayList(props) {
                         //         </FavoriteBorderIcon>
                                 
                         // </ListItem>
-                        <Card key={song.id} sx={{ display: 'flex',border: 1, borderColor: '#fa227c',borderRadius:5, height: '100', backgroundColor: '#000000', flexDirection: 'row'}}>
+                        <Card key={song.id} sx={{ display: 'flex',border: 1, borderColor: '#fa227c',borderRadius:5, height: '700', backgroundColor: '#000000', flexDirection: 'row'}}>
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <CardContent sx={{ flex: '1 0 auto' }}>
                             <Typography component="div" variant="h2" color={"#ffffffff"}>
@@ -129,9 +130,35 @@ export default function PlayList(props) {
                                 {song.artist}
                             </Typography>
                             </CardContent>
-                            <Box>
+                            {console.log(props.favorites)}
+                            <Box sx={{alignItems: 'center'}}>
+                            {/* <IconButton sx={{backgroundColor: '#00000000'}} id={song.id} onClick={()=> props.addToFavorites(song.id)}>
                             <FavoriteBorderIcon sx={{fontSize: 'large',color: '#fa227c',height: 38, width: 38}}>
                             </FavoriteBorderIcon>
+                            </IconButton> */
+                            
+                             !props.favorites.includes(song.id) ? (
+                                <IconButton id="emptyheart" sx={{
+                                     ':hover': {
+                                         bgcolor: '#aab6fe24',
+                                        
+                                    }
+                                }}
+                                onClick={() => props.addToFavorites(song.id)}
+                                >
+                                    <FavoriteBorderIcon sx={{fontSize: 'large',color: '#fa227c',height: 38, width: 38}}></FavoriteBorderIcon>
+                                </IconButton>
+                        ) : (
+                            <IconButton sx={{
+                            ':hover': {
+                                 bgcolor: '#aab6fe24'
+                                }
+                            }}
+                                onClick={() => props.removeFromFavorites(song.id)}
+                            >
+                                <FavoriteIcon sx={{ fontSize: 'large',color: '#fa227c',height: 38, width: 38 }}></FavoriteIcon>
+                            </IconButton>
+                        )}
                                 <CardMedia
                                 component="img"
                                 sx={{ width: 360 }}
