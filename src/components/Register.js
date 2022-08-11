@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
+
 import TextField from '@mui/joy/TextField';
 import { Sheet } from '@mui/joy'
 import Typography from '@mui/joy/Typography';
@@ -8,38 +9,58 @@ import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import { useNavigate } from "react-router-dom";
 
-export default function Login(props) {
+export default function Register(props) {
     const [user, setUser] = useState({
         username: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
     });
-    const [validLogin, setValidLogin] = useState(true);
+    const [validRegistrationUsername, setValidRegistrationUsername] = useState(true);
+    const [validRegistrationPasswords, setValidRegistrationPasswords] = useState(true);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        setValidLogin(props.validLogin);
-    }, [props.validLogin])
+        setValidRegistrationUsername(props.validRegistrationUsername);
+    }, [props.validRegistrationUsername])
+
+    useEffect(() => {
+        setValidRegistrationPasswords(props.validRegistrationPasswords);
+    }, [props.validRegistrationPasswords])
 
 
     const setUserName = (value) => {
         setUser({
             username: value,
-            password: user.password
+            password: user.password,
+            confirmPassword: user.confirmPassword
         })
     }
 
     const setPassword = (value) => {
         setUser({
             username: user.username,
-            password: value
+            password: value,
+            confirmPassword: user.confirmPassword
         })
     }
 
-    const handleLogin = (event) => {
+    const setConfirmPassword = (value) => {
+        setUser({
+            username: user.username,
+            password: user.password,
+            confirmPassword: value
+        })
+    }
+
+    const handleRegister = (event) => {
         event.preventDefault();
 
-        navigate("/home", { replace: true });
-        return props.handleLoginClick(user);
+        // if (validRegistrationUsername && validRegistrationUsername) {
+        //     navigate('/', { replace: true });
+        // }
+        // 
+        return props.handleRegisterClick(user);
     }
 
     return (
@@ -62,7 +83,7 @@ export default function Login(props) {
                     <Typography level="h2" component="h1">
                         <b>Welcome!</b>
                     </Typography>
-                    <Typography level="h6">Sign in to continue</Typography>
+                    <Typography level="h6">Sign up to continue</Typography>
 
                 </div>
                 <TextField
@@ -81,7 +102,15 @@ export default function Login(props) {
                     required={true}
                     onChange={(event) => setPassword(event.target.value)}
                 />
-                {!validLogin ? (
+                <TextField
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="password"
+                    label="Confirm Password"
+                    required={true}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                />
+                {!validRegistrationUsername || !validRegistrationPasswords ? (
                     <Typography
                         variant="soft"
                         color="danger"
@@ -93,7 +122,7 @@ export default function Login(props) {
                         fontSize="md"
                         sx={{ '--Typography-gap': '0.5rem' }}
                     >
-                        The username or password is not correct. Please try again! 
+                        {(!validRegistrationUsername) ? 'The username already exists!' : !validRegistrationPasswords ? 'The two passwords are not the same.': ''}
                     </Typography>
                 ) : <></>
                 }
@@ -102,16 +131,16 @@ export default function Login(props) {
                         mt: 1, // margin top
                     }}
 
-                    onClick={handleLogin}
+                    onClick={handleRegister}
                 >
-                    Log in
+                    Register
                 </Button>
                 <Typography
-                    endDecorator={<Link href="/register">Sign up</Link>}
+                    endDecorator={<Link href="/">Sign in</Link>}
                     fontSize="md"
                     sx={{ alignSelf: 'center' }}
                 >
-                    Don't have an account?
+                    Already have an account?
                 </Typography>
             </Sheet>
         </CssVarsProvider>

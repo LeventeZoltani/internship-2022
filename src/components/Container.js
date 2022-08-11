@@ -9,13 +9,13 @@ import {
     Routes,
     Route,
     Navigate,
-    useLocation
 } from "react-router-dom";
 
 import style from './Container.module.css'
 import Login from './Login'
 import RequireAuth from './RequireAuth'
 import NotFound from './NotFound'
+import Register from './Register'
 
 
 export default class Container extends Component {
@@ -45,6 +45,9 @@ export default class Container extends Component {
         user: null,
         isLoggedIn: false,
         validLogin: true,
+        isRegistered: false,
+        validRegistrationUsername: true,
+        validRegistrationPasswords: true,
         favouriteSongs: []
     }
     songs = [];
@@ -53,17 +56,6 @@ export default class Container extends Component {
     artists = [];
     albums = [];
     favouriteSongs = [];
-
-
-    getPropertyValues = (property, array) => {
-        this.songs.map(song => {
-            const propValue = song[property];
-            if (!array.includes(propValue)) {
-                array.push(propValue);
-            }
-
-        });
-    }
 
     constructor(props) {
         super(props);
@@ -78,6 +70,7 @@ export default class Container extends Component {
         this.removeFromFavourites = this.removeFromFavourites.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
+        this.handleRegisterClick = this.handleRegisterClick.bind(this);
         this.validate = this.validate.bind(this);
         this.getFavouriteSongs = this.getFavouriteSongs.bind(this);
     }
@@ -94,21 +87,10 @@ export default class Container extends Component {
         this.setState({
             user: user
         });
-
-
     }
 
-    getFavouriteSongs() {
-        const favourites = this.state.user.favourites.map((id) =>
-            this.state.songs.filter((song) => song.id == id)
-        )
-
-        this.setState({
-            favouriteSongs: favourites.flat()
-        })
-    }
-
-    getSongs = async () => {
+    // ------ SERVER REQUESTS ------
+    async getSongs() {
         const response = await fetch(`${this.baseUrl}/songs`);
         this.songs = await response.json();
         this.getPropertyValues('genre', this.genres);
@@ -116,32 +98,19 @@ export default class Container extends Component {
         this.getPropertyValues('album', this.albums);
 
         this.setState(() => ({
-            'songs': this.songs
+            songs: this.songs
         }));
     }
 
-    getUsers = async () => {
+    async getUsers() {
         const response = await fetch(`${this.baseUrl}/users`);
         const users = await response.json();
         this.setState(() => ({
-            'users': users
+            users: users
         }));
     }
 
-    filterHelper(input, newSongs, field) {
-        if (input !== '') {
-            let value = input;
-            if (value !== '') {
-                newSongs = newSongs.filter((song) => {
-                    return song[field] === value;
-                }
-                );
-            }
-        }
-        return newSongs;
-    }
-
-    updateUsers = (newUserData) => {
+    updateUsers(newUserData) {
         const request = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -150,30 +119,33 @@ export default class Container extends Component {
 
         fetch(`${this.baseUrl}/users/${this.state.user.id}`, request)
             .then(() => console.log('UPDATE USERS'))
-            .catch((err) => console.log(err));
-
-        // this.getFavouriteSongs();
     }
+
+    createUser(newUser) {
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newUser)
+        }
+        fetch(`${this.baseUrl}/users`, request)
+            .then(() => this.getUsers());
+    }
+
+    // ------ LOGIN ------
 
     validate(username, password) {
         const userIndex = this.state.users.findIndex((user) => user.info.username === username && user.info.password === password);
 
         if (userIndex >= 0) {
             this.setState({
-                user: this.state.users[userIndex]
+                user: this.state.users[userIndex],
+                isLoggedIn: true,
+                validLogin: true,
             });
             localStorage.setItem('user', JSON.stringify(this.state.users[userIndex]));
-            this.setState({
-                isLoggedIn: true,
-            })
-            this.setState({
-                validLogin: true,
-            })
         } else {
             this.setState({
                 isLoggedIn: false,
-            })
-            this.setState({
                 validLogin: false,
             })
         }
@@ -185,11 +157,62 @@ export default class Container extends Component {
 
     handleLogoutClick() {
         this.setState({
-            user: null
+            user: null,
+            isLoggedIn: false,
+            player: {
+                opened: false,
+                playedSong: {}
+            }
         });
         localStorage.removeItem('user');
+    }
+
+    // ------ REGISTER ------
+
+    handleRegisterClick(user) {
+        // this.setState({
+        //     validRegistrationPasswords: true,
+        //     validRegistrationUsername: true
+        // })
+        const userIndex = this.state.users.findIndex((u) => u.info.username === user.username);
+
+        if (userIndex === -1) {
+            if (user.password === user.confirmPassword && user.password !== '' && user.confirmPassword !== '') {
+                const newUser = {
+                    id: (this.state.users.length + 1).toString(),
+                    info: {
+                        username: user.username,
+                        password: user.password
+                    },
+                    favourites: [],
+                    imageUrl: ''
+                }
+                this.createUser(newUser);
+                this.getUsers();
+                this.setState({
+                    isRegistered: true,
+                })
+            } else {
+                this.setState({
+                    validRegistrationPasswords: false
+                })
+            }
+        } else {
+            this.setState({
+                validRegistrationUsername: false
+            })
+        }
+    }
+
+    // ------ FAVOURITES ------
+
+    getFavouriteSongs() {
+        const favourites = this.state.user.favourites.map((id) =>
+            this.state.songs.filter((song) => song.id === id)
+        )
+
         this.setState({
-            isLoggedIn: false,
+            favouriteSongs: favourites.flat()
         })
     }
 
@@ -232,29 +255,7 @@ export default class Container extends Component {
         }
     }
 
-    filterBy() {
-        let newSongs = this.songs;
-        const location = window.location.pathname;
-
-        if (location === '/favourites') {
-            newSongs = this.state.favouriteSongs;
-        }
-
-
-        if (this.state.searchInput !== '') {
-            let title = this.state.searchInput;
-            if (title !== null) {
-                newSongs = newSongs.filter((song) => {
-                    return song.title.toLowerCase().includes(title.toLowerCase())
-                }
-                );
-            }
-        }
-        newSongs = this.filterHelper(this.state.genreInput, newSongs, 'genre');
-        newSongs = this.filterHelper(this.state.artistInput, newSongs, 'artist');
-        newSongs = this.filterHelper(this.state.albumInput, newSongs, 'album');
-        return newSongs;
-    }
+    // ------ FILTER ------
 
     onChangeAlbum(obj) {
         this.setState(() => ({
@@ -280,11 +281,65 @@ export default class Container extends Component {
         })
     }
 
+    getPropertyValues = (property, array) => {
+        this.songs.forEach(song => {
+            const propValue = song[property];
+            if (!array.includes(propValue)) {
+                array.push(propValue);
+            }
+
+        });
+    }
+
+    filterHelper(input, newSongs, field) {
+        if (input !== '') {
+            let value = input;
+            if (value !== '') {
+                newSongs = newSongs.filter((song) => {
+                    return song[field] === value;
+                }
+                );
+            }
+        }
+        return newSongs;
+    }
+
+    filterBy() {
+        let newSongs = this.songs;
+        const location = window.location.pathname;
+        if (location === '/favourites') {
+            newSongs = this.state.favouriteSongs;
+        }
+
+
+        if (this.state.searchInput !== '') {
+            let title = this.state.searchInput;
+            if (title !== null) {
+                newSongs = newSongs.filter((song) => {
+                    return song.title.toLowerCase().includes(title.toLowerCase())
+                }
+                );
+            }
+        }
+        newSongs = this.filterHelper(this.state.genreInput, newSongs, 'genre');
+        newSongs = this.filterHelper(this.state.artistInput, newSongs, 'artist');
+        newSongs = this.filterHelper(this.state.albumInput, newSongs, 'album');
+        return newSongs;
+    }
+
+    // ------ PLAYER ------
+
+    handlePlayClick(song) {
+        this.handlePlayerOpened(!this.opened, song);
+    };
+
     handlePlayerOpened(opened, playedSong) {
         this.setState({
             player: { opened, playedSong }
         })
     }
+
+    // ------ DRAWER ------
 
     handleDrawerToggle = () => {
         const mobileOpen = !this.state.drawer.mobileOpen;
@@ -296,123 +351,103 @@ export default class Container extends Component {
         });
     };
 
-    handlePlayClick(song) {
-        this.handlePlayerOpened(!this.opened, song);
-    };
-
     render() {
         return (
-            <>
-                <Router>
-                    <Routes>
-                        <Route exact path="/" element={
-                            !this.state.isLoggedIn ? (
-                                <main className={style.main}>
-                                    <Login handleLoginClick={this.handleLoginClick} validLogin={this.state.validLogin} />
-                                </main>) : (<Navigate to="/home" />)
+            <Router>
+                {this.state.isLoggedIn ? (
+                    <>
+                        <Header
+                            drawer={this.state.drawer}
+                            handleDrawerToggle={this.handleDrawerToggle}
+                            onChangeAlbum={this.onChangeAlbum}
+                            onChangeArtist={this.onChangeArtist}
+                            onChangeGenre={this.onChangeGenre}
+                            onChangeSearch={this.onChangeSearch}
+                            songs={this.filterBy()}
+                            genres={this.genres}
+                            artists={this.artists}
+                            albums={this.albums}
+                            user={this.state.user} />
+                        <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
+                            <div>
+                                <Player
+                                    playedSong={this.state.player.playedSong}
+                                    addToFavourites={this.addToFavourites}
+                                    removeFromFavourites={this.removeFromFavourites}
+                                    user={this.state.user} />
+                            </div>
+                        </Slide><SideNavigationDrawer
+                            drawer={this.state.drawer}
+                            handleDrawerToggle={this.handleDrawerToggle}
+                            handleLogoutClick={this.handleLogoutClick}
+                            zIndex={-1} /></>
+                ) : <></>
+                }
+                <Routes>
+                    <Route exact path="/" element={
+                        !this.state.isLoggedIn ? (
+                            <main className={style.main}>
+                                <Login handleLoginClick={this.handleLoginClick} validLogin={this.state.validLogin} />
+                            </main>) : (<Navigate to="/home" />)
 
-                        } />
-                        <Route exact path="/home" element={
+                    } />
 
-                            <RequireAuth isLoggedIn={this.state.isLoggedIn}>
-                                <Header
-                                    drawer={this.state.drawer}
-                                    handleDrawerToggle={this.handleDrawerToggle}
-                                    onChangeAlbum={this.onChangeAlbum}
-                                    onChangeArtist={this.onChangeArtist}
-                                    onChangeGenre={this.onChangeGenre}
-                                    onChangeSearch={this.onChangeSearch}
-                                    songs={this.filterBy()}
-                                    genres={this.genres}
-                                    artists={this.artists}
-                                    albums={this.albums}
-                                    user={this.state.user}
-                                />
+                    <Route exact path="/register" element={
+                        !this.state.isLoggedIn ? (
+                            <RequireAuth isLoggedIn={!this.state.isRegistered}>
                                 <main className={style.main}>
-                                    <Main
-                                        drawer={this.state.drawer}
-                                        songs={this.filterBy()}
-                                        handlePlayClick={this.handlePlayClick}
-                                        addToFavourites={this.addToFavourites}
-                                        removeFromFavourites={this.removeFromFavourites}
-                                        user={this.state.user}
-                                        getFavouriteSongs={this.getFavouriteSongs}
+                                    <Register
+                                        handleRegisterClick={this.handleRegisterClick}
+                                        validRegistrationUsername={this.state.validRegistrationUsername}
+                                        validRegistrationPasswords={this.state.validRegistrationPasswords}
                                     />
-                                </main>
-                                <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
-                                    <div>
-                                        <Player
-                                            playedSong={this.state.player.playedSong}
-                                            addToFavourites={this.addToFavourites}
-                                            removeFromFavourites={this.removeFromFavourites}
-                                            user={this.state.user} />
-                                    </div>
-                                </Slide>
-                                <SideNavigationDrawer
-                                    drawer={this.state.drawer}
-                                    handleDrawerToggle={this.handleDrawerToggle}
-                                    handleLogoutClick={this.handleLogoutClick}
-                                    zIndex={-1} />
+                                </main></RequireAuth>
 
-                            </RequireAuth>
-                        }>
+                        ) : (<Navigate to="/" />)} />
 
-                        </Route>
-                        <Route exact path="/favourites" element={
-                            <RequireAuth isLoggedIn={this.state.isLoggedIn}>
-                                <Header
+                    <Route exact path="/home" element={
+
+                        <RequireAuth isLoggedIn={this.state.isLoggedIn}>
+
+                            <main className={style.main}>
+                                <Main
                                     drawer={this.state.drawer}
-                                    handleDrawerToggle={this.handleDrawerToggle}
-                                    onChangeAlbum={this.onChangeAlbum}
-                                    onChangeArtist={this.onChangeArtist}
-                                    onChangeGenre={this.onChangeGenre}
-                                    onChangeSearch={this.onChangeSearch}
                                     songs={this.filterBy()}
-                                    genres={this.genres}
-                                    artists={this.artists}
-                                    albums={this.albums}
+                                    handlePlayClick={this.handlePlayClick}
+                                    addToFavourites={this.addToFavourites}
+                                    removeFromFavourites={this.removeFromFavourites}
                                     user={this.state.user}
+                                    getFavouriteSongs={this.getFavouriteSongs}
                                 />
-
-                                <main className={style.main}>
-                                    <Main
-                                        drawer={this.state.drawer}
-                                        songs={this.filterBy()}
-                                        handlePlayClick={this.handlePlayClick}
-                                        addToFavourites={this.addToFavourites}
-                                        removeFromFavourites={this.removeFromFavourites}
-                                        user={this.state.user}
-                                        getFavouriteSongs={this.getFavouriteSongs}
-                                    />
-                                </main>
-
-                                <Slide direction="up" in={this.state.player.opened} mountOnEnter unmountOnExit>
-                                    <div>
-                                        <Player
-                                            playedSong={this.state.player.playedSong}
-                                            addToFavourites={this.addToFavourites}
-                                            removeFromFavourites={this.removeFromFavourites}
-                                            user={this.state.user} />
-                                    </div>
-                                </Slide>
-                                <SideNavigationDrawer
-                                    drawer={this.state.drawer}
-                                    handleDrawerToggle={this.handleDrawerToggle}
-                                    handleLogoutClick={this.handleLogoutClick}
-                                    zIndex={-1} />
-
-                            </RequireAuth>
-
-                        } />
-                        <Route exact path="*" element={
-                            <main>
-                                <NotFound />
                             </main>
-                        } />
+                        </RequireAuth>
 
-                    </Routes>
-                </Router>
-            </>
+                    }>
+                    </Route>
+                    <Route exact path="/favourites" element={
+                        <RequireAuth isLoggedIn={this.state.isLoggedIn}>
+                            <main className={style.main}>
+                                <Main
+                                    drawer={this.state.drawer}
+                                    songs={this.filterBy()}
+                                    handlePlayClick={this.handlePlayClick}
+                                    addToFavourites={this.addToFavourites}
+                                    removeFromFavourites={this.removeFromFavourites}
+                                    user={this.state.user}
+                                    getFavouriteSongs={this.getFavouriteSongs}
+                                />
+                            </main>
+
+                        </RequireAuth>
+                    } />
+                    <Route exact path="*" element={
+                        <main>
+                            <NotFound />
+                        </main>
+                    } />
+
+                </Routes>
+            </Router>
         )
     }
 }
