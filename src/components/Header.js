@@ -58,7 +58,7 @@ import {
 
 const route="/";
 const pages = ['Home','LogIn','CreateAccount'];
-const settings = ['Profile', 'Account', 'Favorites', 'Logout'];
+const settings = ['Logout'];
 
 const ResponsiveAppBar = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -78,6 +78,13 @@ const ResponsiveAppBar = (props) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleAction = () => {
+    // console.log(setting);
+    // if(setting==="Favorites"){
+    //   console.log("Show favorites list attempted!");
+    // }
   };
 
   //const options = PlayList.getSongs();
@@ -181,11 +188,11 @@ const ResponsiveAppBar = (props) => {
             ))}
           </Box>
           <MyAutocomplete titles={props.titles} genres={props.genres} artists={props.artists} albums={props.albums} update={props.update} songs={props.songs} getOptionsByFilter={props.getOptionsByFilter}/>
-          <MySelect update={props.update} songs={props.songs} filter={props.filter} handleFilter={props.handleFilter}/>
+          <MySelect update={props.update} songs={props.songs} filter={props.filter} handleFilter={props.handleFilter} getFavorites={props.getFavorites}/>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/NS-WKMAG0730-1595944356.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -203,10 +210,13 @@ const ResponsiveAppBar = (props) => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Button onClick={props.handleLogOut}>
+                      <Typography textAlign="center">{setting}</Typography>
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>

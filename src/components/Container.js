@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { Routes } from "react-router-dom";
 import LogIn from "./LogIn";
+import CreateAccount from './CreateAccount';
 
 import {
     BrowserRouter as Router,
@@ -26,6 +27,7 @@ export default class Container extends Component {
         albums: [],
         songId: "",
         users: [{
+             id: "",
              username: "",
              password: "",
              favorites: [],  //this list contains the id's of the songs :)
@@ -33,6 +35,7 @@ export default class Container extends Component {
              avatar: "",
         }],
         user: {
+            id: "",
             username: "",
              password: "",
              favorites: [],  //this list contains the id's of the songs :)
@@ -40,11 +43,12 @@ export default class Container extends Component {
              avatar: "",
         },
         isLoggedIn: false,
-
+        stringsOfFavorites:[]
     }
     favorites=[];
     songs = [];
     users = [{
+        id: "",
         username: "",
         password: "",
         favorites: [],  //this list contains the id's of the songs :)
@@ -52,6 +56,7 @@ export default class Container extends Component {
         avatar: "",
    }];
     user={
+        id: "",
         username: "",
         password: "",
         favorites: [],  //this list contains the id's of the songs :)
@@ -75,7 +80,11 @@ export default class Container extends Component {
         this.validate=this.validate.bind(this);
         //this.handlePlayerOpened = this.handlePlayerOpened.bind(this);
         //this.handlePlayClick = this.handlePlayClick.bind(this);
-        //this.update = this.update.bind(this);
+        this.updateUsers = this.updateUsers.bind(this);
+        //this.handleAction = this. handleAction.bind(this);
+        this.getFavorites = this.getFavorites.bind(this);
+        this.logOut= this.logOut.bind(this);
+        this.createAccount= this.createAccount.bind(this);
     }
 
     componentDidMount() {
@@ -83,7 +92,20 @@ export default class Container extends Component {
         this.getUsers();
         // console.log(this.state.songs)
         //{console.log('container:'+this.state.songs)}
-        
+        //localStorage.setItem('user', JSON.stringify(this.state.user));
+        const user = JSON.parse(localStorage.getItem('user'));
+       
+        if (user) {
+            this.setState({
+                isLoggedIn: true
+            });
+        }
+        // this.setState({
+        //     user: user
+        // });
+        this.setState({
+            user: user
+        });
     }
 
     
@@ -151,10 +173,12 @@ export default class Container extends Component {
         return this.state.artists;
        }else if(this.filter=="Album"){
         return this.state.albums;
-       }else{
-        return [];
+       }else {
+         for(let i=0; i<this.state.users.favorites; i++){
+            this.state.stringsOfFavorites[i]=this.state.users.favorites[i].toString();
+         }
+         return this.state.stringsOfFavorites;
        }
-          
     } 
     
     
@@ -178,7 +202,10 @@ export default class Container extends Component {
         }));
     }
 
-    
+    // handleAction(action){
+
+    // }
+
     handleFilter(filter){
         this.setState(() => ({
             'filter': filter
@@ -196,9 +223,37 @@ export default class Container extends Component {
             this.getSongsByArtist(value);
         }else if(this.filter=="Album"){
             this.getSongsByAlbum(value);
+        }else if(this.filter=="Favorites"){
+            this.getFavorites();
         }
        
             
+    }
+    
+  
+
+    getFavorites(){
+        
+        for(let i=0; i<this.state.user.favorites.length; i++){
+            let newSongs = this.songs;
+            if (this.state.user.favorites[i] !== null) {
+                newSongs = newSongs.filter((song) =>{
+                    console.log(song.id.toLowerCase().includes(this.state.user.favorites[i]))
+                    return song.id.toLowerCase().includes(this.state.user.favorites[i].toLowerCase()) || this.state.user.favorites[i] === null
+                }
+                    );
+                console.log(newSongs)
+            } else {
+                
+            }
+    
+            this.setState(() => ({
+                songs: newSongs
+            }));
+            //console.log(this.state.songs+"hereeeeee");
+        }
+       
+        
     }
 
     // updateUserStatus = async(id)=>{
@@ -292,19 +347,38 @@ export default class Container extends Component {
     //     console.log(album);
     //     this.getSongsByAlbum(album);
     // }
+    updateUsers = async(newUserData) => {
+        const request = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newUserData)
+        }
+
+        fetch(this.baseUsersUrl+"/"+this.state.user.id, request)
+        .then(() => console.log('UPDATE USERS'))
+        .catch((err) => console.log(err));
+
+
+
+    }
 
     addToFavorites(songId){
         
-       this.favorites.push(songId);
+       this.state.user.favorites.push(songId);
        console.log("Add to favorites attempted  "+songId);
+       const newUserData ={
+        id: this.state.user.id,
+        username: this.state.user.username,
+        password: this.state.user.password,
+        favorites: this.state.user.favorites,
+        isLoggedIn: this.state.user.isLoggedIn,
+        avatar: this.state.user.avatar,
+       }
        this.setState(()=>({
-         users: [{
-            'username': this.state.users[0].username,
-            "password" : this.state.users[0].password,
-            'favorites': this.favorites,
-         }]
+         user: newUserData
        }));
-       console.log(this.favorites);
+       console.log(this.state.user.favorites);
+       this.updateUsers(newUserData);
     //    const heart = document.getElementById("emptyheart");
     //    heart.innerHTML=` <FavoriteIcon sx={{fontSize: 'large',color: '#fa227c',height: 38, width: 38}}></FavoriteIcon>`;
     }
@@ -314,15 +388,20 @@ export default class Container extends Component {
         const index = newFavorites.findIndex((x) => x.songId === songId);
         newFavorites.splice(0,index);
         newFavorites.splice(index-1,1);
+        const newUserData ={
+            id: this.state.user.id,
+            username: this.state.user.username,
+            password: this.state.user.password,
+            favorites: this.state.user.favorites.filter((fav)=> fav !== songId),
+            isLoggedIn: this.state.user.isLoggedIn,
+            avatar: this.state.user.avatar,
+        }
         console.log("Remove favorites attempted  "+songId);
         this.setState(()=>({
-            users: [{
-               'username': this.state.users[0].username,
-               "password" : this.state.users[0].password,
-               'favorites': newFavorites,
-            }]
+           user: newUserData,
           }));
           console.log(newFavorites);
+        this.updateUsers(newUserData);  
     }
 
     logIn(user){
@@ -368,13 +447,57 @@ export default class Container extends Component {
         }   
     }
 
+    logOut(){
+        this.setState({
+            user: null,
+            isLoggedIn: false,
+            player: {
+                opened: false,
+                playedSong: {}
+            }
+        });
+        localStorage.removeItem('user');
+    }
+
+    createUser(newUser) {
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newUser)
+        }
+        fetch(this.baseUsersUrl, request)
+            .then(() => this.getUsers());
+    }
+    createAccount(user){
+        console.log("Create account attempted", user);
+        const userIndex = this.state.users.findIndex((u) => u.username === user.username);
+        if (userIndex === -1 && user.username !== '') {
+            if (user.password === user.confirmPassword && user.password !== '' && user.confirmPassword !== '') {
+                const newUser={
+                    id: (this.state.users.length + 1),
+                    username: user.username,
+                    password: user.password,
+                    favorites: [],
+                    avatar: '',
+                    
+                }
+                this.createUser(newUser);
+                
+                alert("Account created succesfully! :))");
+            }else{
+                alert("Passwords not matching! :((. Please retype passwords!");
+            }
+        }
+    }
+
+
     render(){
         return(
             <>
 
         <Router>
       
-       
+        
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -385,8 +508,7 @@ export default class Container extends Component {
         */}
                         <Routes>
                             <Route exact path="/" element={<><React.Fragment>
-                                {/* <RequireAuth isLoggedIn={this.state.isLoggedIn}> */}
-                                    <Header
+                                <Header
                                     //drawer={this.state.drawer}
                                     //handleDrawerToggle={this.handleDrawerToggle}
                                     //update={this.update}
@@ -398,20 +520,16 @@ export default class Container extends Component {
                                     update={this.update}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
-                                    getOptionsByFilter={this.getOptionsByFilter} />
-                              {/* </RequireAuth> */}
+                                    getOptionsByFilter={this.getOptionsByFilter} 
+                                    handleLogOut={this.logOut}/>
                             </React.Fragment>
-                                    <Main
-                                    //drawer={this.state.drawer}
-                                    songs={this.state.songs}
-                                    addToFavorites={this.addToFavorites}
-                                    removeFromFavorites={this.removeFromFavorites}
-                                    songId={this.songId}
-                                    favorites={this.state.users[0].favorites} />
+                                    <LogIn 
+                                      logIn={this.logIn}
+                                    />
                                     <Footer
                                     //drawer={this.state.drawer}
                                     songs={this.state.songs} /></>}>  
-                               
+                                    
                                 
                                  
                             </Route>
@@ -429,7 +547,10 @@ export default class Container extends Component {
                                     update={this.update}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
-                                    getOptionsByFilter={this.getOptionsByFilter} />
+                                    getOptionsByFilter={this.getOptionsByFilter}
+                                    getFavorites={this.getFavorites}
+                                    handleLogOut={this.logOut}/>
+                                    
                               {/* </RequireAuth> */}
                             </React.Fragment>
                                     <Main
@@ -438,10 +559,13 @@ export default class Container extends Component {
                                     addToFavorites={this.addToFavorites}
                                     removeFromFavorites={this.removeFromFavorites}
                                     songId={this.songId}
-                                    favorites={this.state.users[0].favorites} />
+                                    favorites={this.state.user.favorites} 
+                                    user={this.state.user}
+                                    />
                                     <Footer
                                     //drawer={this.state.drawer}
-                                    songs={this.state.songs} /></>}>  
+                                    songs={this.state.songs} 
+                                    /></>}>  
                                
                                 
                                  
@@ -459,7 +583,8 @@ export default class Container extends Component {
                                     update={this.update}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
-                                    getOptionsByFilter={this.getOptionsByFilter} />
+                                    getOptionsByFilter={this.getOptionsByFilter}
+                                    handleLogOut={this.logOut} />
                             </React.Fragment>
                                     <LogIn 
                                       logIn={this.logIn}
@@ -482,9 +607,10 @@ export default class Container extends Component {
                                     update={this.update}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
-                                    getOptionsByFilter={this.getOptionsByFilter} />
+                                    getOptionsByFilter={this.getOptionsByFilter} 
+                                    handleLogOut={this.logOut}/>
                             </React.Fragment>
-                                    
+                                    <CreateAccount createAccount={this.createAccount}/>
                                     <Footer
                                     //drawer={this.state.drawer}
                                     songs={this.state.songs} /></>}>

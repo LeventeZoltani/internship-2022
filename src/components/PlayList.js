@@ -137,7 +137,7 @@ export default function PlayList(props) {
                             </FavoriteBorderIcon>
                             </IconButton> */
                             
-                             !props.favorites.includes(song.id) ? (
+                             !props.user.favorites.includes(song.id) ? (
                                 <IconButton id="emptyheart" sx={{
                                      ':hover': {
                                          bgcolor: '#aab6fe24',

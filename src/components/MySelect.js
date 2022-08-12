@@ -13,7 +13,11 @@ export default function MySelect(props) {
   const handleChange = (event) => {
     setFilter(event.target.value);
     console.log(event.target.value);
-    props.handleFilter(event.target.value);
+    
+       props.handleFilter(event.target.value);
+    
+   
+       
     //props.setState({'filter': event.target.value});
     //setArtist(event.target.value);
   };
@@ -36,6 +40,7 @@ export default function MySelect(props) {
           <MenuItem value={"Genre"}>Genre</MenuItem>
           <MenuItem value={"Artist"}>Artist</MenuItem>
           <MenuItem value={"Album"}>Album</MenuItem>
+          <MenuItem value={"Favorites"}>Favorites</MenuItem>
         </Select>
       </FormControl>
     </Box>
