@@ -11,8 +11,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import GraphicEqRoundedIcon from '@mui/icons-material/GraphicEqRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import style from './SideNavigationDrawer.module.css'
+import { Grid } from '@mui/material';
 
 /* 
  * Function for rendering side navigation drawer.
@@ -25,39 +27,45 @@ function SideNavigationDrawer(props) {
     }
 
     const drawer = (
-        <div className={style.drawer}>
-            <Toolbar />
-            <List>
-                <ListItem disablePadding>
-                    <Link to="/home">
+        <>
+            <Grid container sx={{mt: "20px", alignItems:"center"}}>
+                <GraphicEqRoundedIcon sx={{ color: '#aab6fe', fontSize: "50px",  ml: "10px"}} />
+                <Typography variant='h3' sx={{ color: '#aab6fe', fontSize: "30px", margin: "10px", fontFamily: '"Segoe UI"'}}>SpotiPlayer</Typography>
+            </Grid>
+
+            <div className={style.drawer}>
+                <Toolbar />
+                <List>
+                    <ListItem disablePadding>
+                        <Link to="/home">
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <HomeRoundedIcon sx={{ color: '#aab6fe' }} />
+                                </ListItemIcon>
+                                <ListItemText><Typography variant='h5' color='#aab6fe'>Home</Typography></ListItemText>
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Link to="/favourites">
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <FavoriteRoundedIcon sx={{ color: '#aab6fe' }} />
+                                </ListItemIcon>
+                                <ListItemText><Typography variant='h5' color='#aab6fe'>Favourites</Typography></ListItemText>
+                            </ListItemButton>
+                        </Link>
+                    </ListItem>
+                    <ListItem disablePadding onClick={handleLogout}>
                         <ListItemButton>
-                            <ListItemIcon >
-                                <HomeRoundedIcon sx={{ color: '#aab6fe' }} />
+                            <ListItemIcon>
+                                <LogoutRoundedIcon sx={{ color: '#aab6fe' }} />
                             </ListItemIcon>
-                            <ListItemText><Typography variant='h5' color='#aab6fe'>Home</Typography></ListItemText>
+                            <ListItemText><Typography variant='h5' color='#aab6fe'>Logout</Typography></ListItemText>
                         </ListItemButton>
-                    </Link>
-                </ListItem>
-                <ListItem disablePadding>
-                    <Link to="/favourites">
-                        <ListItemButton>
-                            <ListItemIcon >
-                                <FavoriteRoundedIcon sx={{ color: '#aab6fe' }} />
-                            </ListItemIcon>
-                            <ListItemText><Typography variant='h5' color='#aab6fe'>Favourites</Typography></ListItemText>
-                        </ListItemButton>
-                    </Link>
-                </ListItem>
-                <ListItem disablePadding onClick={handleLogout}>
-                    <ListItemButton>
-                        <ListItemIcon >
-                            <LogoutRoundedIcon sx={{ color: '#aab6fe' }} />
-                        </ListItemIcon>
-                        <ListItemText><Typography variant='h5' color='#aab6fe'>Logout</Typography></ListItemText>
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </div>
+                    </ListItem>
+                </List>
+            </div></>
     );
 
     const container = document.getElementsByTagName('body')[0];
@@ -90,6 +98,7 @@ function SideNavigationDrawer(props) {
 
                 }}
             >
+                <GraphicEqRoundedIcon sx={{ color: '#aab6fe', fontSize: "50px" }} />
                 {drawer}
             </Drawer>
             <Drawer

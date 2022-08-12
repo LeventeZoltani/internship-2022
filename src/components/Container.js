@@ -15,6 +15,7 @@ import Login from './Login'
 import RequireAuth from './RequireAuth'
 import NotFound from './NotFound'
 import Register from './Register'
+import SimpleSnackbar from './SimpleSnackBar'
 
 /** The App's Container. */
 export default class Container extends Component {
@@ -227,12 +228,14 @@ export default class Container extends Component {
                 })
             } else {
                 this.setState({
-                    validRegistrationPasswords: false
+                    validRegistrationPasswords: false,
+                    validRegistrationUsername: true
                 })
             }
         } else {
             this.setState({
-                validRegistrationUsername: false
+                validRegistrationUsername: false,
+                validRegistrationPasswords: false,
             })
         }
     }
@@ -520,6 +523,11 @@ export default class Container extends Component {
                         <NotFound />
                     } />
                 </Routes>
+                {
+                    this.state.isRegistered ? (
+                        <SimpleSnackbar open={this.state.isRegistered} />
+                    ) : <></>
+                }
             </Router>
         )
     }

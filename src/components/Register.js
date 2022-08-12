@@ -7,6 +7,23 @@ import Typography from '@mui/joy/Typography';
 import { CssVarsProvider } from '@mui/joy/styles';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
+import { styled } from '@mui/material/styles';
+import GraphicEqRounded from '@mui/icons-material/GraphicEqRounded';
+
+const CssTextField = styled(TextField)({
+    '& label': {
+        fontSize: '14px'
+    },
+    '& input': {
+        fontSize: '14px',
+    },
+    '& input: focused': {
+        borderColor: '#aab6fe'
+    },
+    '.JoyFormLabel-asterisk': {
+        color: '#97a7fc'
+    },
+});
 
 /* 
  * Function for rendering register feature.
@@ -17,6 +34,7 @@ export default function Register(props) {
         password: '',
         confirmPassword: ''
     });
+
     const [validRegistrationUsername, setValidRegistrationUsername] = useState(true);
     const [validRegistrationPasswords, setValidRegistrationPasswords] = useState(true);
 
@@ -27,7 +45,6 @@ export default function Register(props) {
     useEffect(() => {
         setValidRegistrationPasswords(props.validRegistrationPasswords);
     }, [props.validRegistrationPasswords])
-
 
     const setUserName = (value) => {
         setUser({
@@ -64,24 +81,26 @@ export default function Register(props) {
                 <Sheet
                     sx={{
                         maxWidth: 500,
+                        minHeight: 500,
                         mx: 'auto', // margin left & right
                         my: 4, // margin top & botom
-                        py: 3, // padding top & bottom
-                        px: 2, // padding left & right
+                        padding: 3, // padding top & bottom
                         display: 'flex',
                         flexDirection: 'column',
+                        justifyContent: 'center',
                         gap: 4,
                         borderRadius: '25px',
                         boxShadow: 'sm',
                     }}
                 >
                     <div>
+                        <GraphicEqRounded sx={{ color: '#aab6fe', fontSize: "50px" }} />
                         <Typography level="h2" component="h1">
-                            <b>Welcome!</b>
+                            <b>Welcome to SpotiPlayer!</b>
                         </Typography>
                         <Typography level="h6">Sign up to continue</Typography>
                     </div>
-                    <TextField
+                    <CssTextField
                         name="username"
                         type="text"
                         placeholder="arianna"
@@ -89,7 +108,7 @@ export default function Register(props) {
                         required={true}
                         onChange={(event) => setUserName(event.target.value)}
                     />
-                    <TextField
+                    <CssTextField
                         name="password"
                         type="password"
                         placeholder="password"
@@ -126,14 +145,25 @@ export default function Register(props) {
                     <Button
                         sx={{
                             mt: 1, // margin top
+                            bgcolor: '#aab6fe',
+                            color: 'black',
+                            ":hover": {
+                                bgcolor: '#97a7fc'
+                            }
                         }}
-
                         onClick={handleRegister}
                     >
                         Register
                     </Button>
                     <Typography
-                        endDecorator={<Link href="/">Sign in</Link>}
+                        endDecorator={
+                            <Link href="/"
+                                sx={{
+                                    mx: 1,
+                                    color: '#97a7fc',
+                                }}>
+                                Sign in
+                            </Link>}
                         fontSize="md"
                         sx={{ alignSelf: 'center' }}
                     >

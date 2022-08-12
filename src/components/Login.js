@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react'
 
 import TextField from '@mui/joy/TextField';
+import { styled } from '@mui/material/styles';
 import { Sheet } from '@mui/joy'
 import Typography from '@mui/joy/Typography';
 import { CssVarsProvider } from '@mui/joy/styles';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import { useNavigate } from "react-router-dom";
+import GraphicEqRounded from '@mui/icons-material/GraphicEqRounded';
+
+
+const CssTextField = styled(TextField)({
+    '& label': {
+        fontSize: '14px'
+    },
+    '& input': {
+        fontSize: '14px',
+    },
+    '& input: focused': {
+        borderColor: '#aab6fe'
+    },
+    '.JoyFormLabel-asterisk': {
+        color: '#97a7fc'
+    },
+});
 
 /* 
  * Function for rendering login feature.
@@ -62,24 +80,26 @@ export default function Login(props) {
                 <Sheet
                     sx={{
                         maxWidth: 500,
+                        minHeight: 500,
                         mx: 'auto', // margin left & right
                         my: 4, // margin top & botom
-                        py: 3, // padding top & bottom
-                        px: 2, // padding left & right
+                        padding: 3, // padding top & bottom
                         display: 'flex',
                         flexDirection: 'column',
+                        justifyContent: 'center',
                         gap: 4,
                         borderRadius: '25px',
                         boxShadow: 'sm',
                     }}
                 >
                     <div>
-                        <Typography level="h2" component="h1">
-                            <b>Welcome!</b>
+                        <GraphicEqRounded sx={{ color: '#aab6fe', fontSize: "50px"}}/>
+                        <Typography level="h2" component="h1" fontWeight="bold">
+                            Welcome to SpotiPlayer!
                         </Typography>
                         <Typography level="h6">Sign in to continue</Typography>
                     </div>
-                    <TextField
+                    <CssTextField
                         name="username"
                         type="text"
                         placeholder="arianna"
@@ -87,7 +107,7 @@ export default function Login(props) {
                         required={true}
                         onChange={(event) => setUserName(event.target.value)}
                     />
-                    <TextField
+                    <CssTextField
                         name="password"
                         type="password"
                         placeholder="password"
@@ -114,6 +134,11 @@ export default function Login(props) {
                     <Button
                         sx={{
                             mt: 1, // margin top
+                            bgcolor: '#aab6fe',
+                            color: 'black',
+                            ":hover": {
+                                bgcolor: '#97a7fc'
+                            }
                         }}
 
                         onClick={handleLogin}
@@ -121,7 +146,14 @@ export default function Login(props) {
                         Log in
                     </Button>
                     <Typography
-                        endDecorator={<Link href="/register">Sign up</Link>}
+                        endDecorator={
+                            <Link href="/register"
+                                sx={{
+                                    mx: 1,
+                                    color: '#97a7fc',
+                                }}>
+                                Sign up
+                            </Link>}
                         fontSize="md"
                         sx={{ alignSelf: 'center' }}
                     >
