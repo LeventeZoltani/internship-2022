@@ -224,7 +224,7 @@ export default class Container extends Component {
         }else if(this.filter=="Album"){
             this.getSongsByAlbum(value);
         }else if(this.filter=="Favorites"){
-            this.getFavorites();
+            //this.getFavorites();
         }
        
             
@@ -233,25 +233,29 @@ export default class Container extends Component {
   
 
     getFavorites(){
-        
+         let newSongs = [];
         for(let i=0; i<this.state.user.favorites.length; i++){
-            let newSongs = this.songs;
-            if (this.state.user.favorites[i] !== null) {
-                newSongs = newSongs.filter((song) =>{
-                    console.log(song.id.toLowerCase().includes(this.state.user.favorites[i]))
-                    return song.id.toLowerCase().includes(this.state.user.favorites[i].toLowerCase()) || this.state.user.favorites[i] === null
-                }
-                    );
-                console.log(newSongs)
-            } else {
+           for( let song in this.songs){
+               if(song.id == this.state.user.favorites[i]){
+                  newSongs[i]=song;
+               }
+           }
+            // if (this.state.user.favorites[i] !== null) {
+            //     (newSongs.filter((song) =>{
+            //         // console.log(song.id.toString().toLowerCase().includes(this.state.user.favorites[i].toString()))
+            //         return song.id == this.state.user.favorites[i]
+            //     })
+            //         );
+            //     console.log(newSongs)
+            // } else {
                 
-            }
-    
+            // }
+        }
             this.setState(() => ({
                 songs: newSongs
             }));
             //console.log(this.state.songs+"hereeeeee");
-        }
+        
        
         
     }
@@ -520,6 +524,7 @@ export default class Container extends Component {
                                     update={this.update}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
+                                    getFavorites={this.getFavorites}
                                     getOptionsByFilter={this.getOptionsByFilter} 
                                     handleLogOut={this.logOut}/>
                             </React.Fragment>
@@ -581,6 +586,7 @@ export default class Container extends Component {
                                     albums={this.state.albums}
                                     genres={this.state.genres}
                                     update={this.update}
+                                    getFavorites={this.getFavorites}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
                                     getOptionsByFilter={this.getOptionsByFilter}
@@ -605,6 +611,7 @@ export default class Container extends Component {
                                     albums={this.state.albums}
                                     genres={this.state.genres}
                                     update={this.update}
+                                    getFavorites={this.getFavorites}
                                     filter={this.state.filter}
                                     handleFilter={this.handleFilter}
                                     getOptionsByFilter={this.getOptionsByFilter} 
