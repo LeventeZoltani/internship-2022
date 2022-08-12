@@ -13,12 +13,6 @@ class Main extends Component {
         isOpen: false,
     }
 
-    mountedStyle = { display: "block" };
-
-    unmountedStyle = {
-        display: 'none',
-    };
-
     constructor(props) {
         super(props);
         this.setCurrentSong = this.setCurrentSong.bind(this);
@@ -46,19 +40,7 @@ class Main extends Component {
         return (
             <main className={style.main}>
                 <ul>
-                    {/* {Array.isArray(this.props.songs) ? this.props.songs.map(song => (
-                        <SongListElement
-                            key={song.id}
-                            id={song.id}
-                            title={song.title}
-                            artist={song.artist}
-                            imageSrc={song.imageSrc}
-                            currentSongChanger={this.setCurrentSong}
-                            handleLikeSong={this.props.handleLikeSong}
-                            handleDislikeSong={this.props.handleDislikeSong}
-                            isSongLiked={this.props.isSongLiked(song.id)}
-                        />
-                    )) : null} */}
+                    {/* display a SongListElement for every song in the list given in props */}
                     {Array.isArray(this.props.songs) && this.props.songs !== null ? this.props.songs.map(song => (
                         <SongListElement
                             key={song.id}
@@ -71,7 +53,13 @@ class Main extends Component {
                             handleDislikeSong={this.props.handleDislikeSong}
                             isSongLiked={this.props.isSongLiked(song.id)}
                         />
-                    )) : null}
+                    )) :
+                    //user is not logged in => no liked songs
+                     <h2 className={style.nothingToSee}>Nothing to see here... <a href="/login">Login</a> to like some songs</h2>}
+                    {/* if there are no liked songs but user is logged in */}
+                    {this.props.songs !== undefined && this.props.songs.length === 0 &&
+                        <h2 className={style.nothingToSee}>Nothing to see here... Like some songs!</h2>
+                    }
                 </ul>
                 {this.state.isOpen  &&
                     <MusicPlayer
@@ -80,8 +68,6 @@ class Main extends Component {
                         musicSrc={this.state.currentSong.musicSrc}
                         openedPlayer={this.state.isOpen}
                         closePlayer={this.closePlayer}
-                        mountedStyle={this.mountedStyle}
-                        unmountedStyle={this.unmountedStyle}
                     />
                 }
 

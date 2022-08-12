@@ -8,7 +8,6 @@
     padding: 0;
     display: flex;
     animation: inAnimation 500ms ease-in-out;
-    /* transition: all 3.5s ease; */
 }
 
 .player{
@@ -17,8 +16,6 @@
     padding: 0;
     margin: 0;
     background-color: transparent;
-    /* transform: translateY(); */
-    /* transition: all 3.5s ease; */
 }
 
 .ah{
@@ -27,25 +24,9 @@
 
 @keyframes inAnimation {
     from {
-
-        /* visibility: hidden; */
         transform: translateY(100%);
     }
     to {
-
-        /* visibility: visible; */
-        transform: translateY(0);
-    }
-}
-
-@keyframes outAnimation {
-    from {
-
-        transform: translateY(-100%);
-    }
-
-    100% {
-
         transform: translateY(0);
     }
 }

@@ -49,24 +49,22 @@ export default class Login extends Component {
         this.setState({
             username: e.target.value
         })
-        console.log(this.state.username);
     }
 
     handlePasswordChange(e) {
         this.setState({
             password: e.target.value
         })
-        console.log(this.state.password);
     }
 
-    handleSubmit = (event) => {
+    handleLoginSubmit = (event) => {
         event.preventDefault();
 
         let userData = {
             username: this.state.username,
             password: this.state.password
         }
-        this.props.handleSubmit(userData);
+        this.props.handleLoginSubmit(userData);
     }
 
     handleLogOut() {
@@ -80,10 +78,11 @@ export default class Login extends Component {
     render() {
         return (
             <div className={style.login}>
+                {/* user is not logged in */}
                 {localStorage.getItem("isLoggedIn") === "false" &&
-                    <div>
-                        <h1>Log in !</h1>
-                        <form className={style.form} onSubmit={this.handleSubmit}>
+                    <div className={style.login}>
+                        <h1>Log in!</h1>
+                        <form className={style.form} onSubmit={this.handleLoginSubmit}>
                             <div className={style.label}>
                                 <label className={style.label}>Username</label>
                             </div>
@@ -119,17 +118,19 @@ export default class Login extends Component {
                             </div>
                             <div className={style.buttonDiv}>
                                 <Button
-                                    onClick={this.handleSubmit}
+                                    onClick={this.handleLoginSubmit}
                                     variant="contained"
                                     className={style.submitButton} >LOGIN</Button>
                             </div>
                         </form>
+                        <p>Don't have an accout? Register <a href="/register">here</a></p>
                     </div>}
+                {/* user is already logged in - do not show form */}
                 {localStorage.getItem("isLoggedIn") === "true" &&
                     <div className={style.loggedIn}>
-                        <h1>Login successful as {localStorage.getItem("username")}!</h1>
+                        <h1>Logged in successfully as {localStorage.getItem("username")}!</h1>
                         <Router>
-                            <div>
+                            <div className={style.buttonDiv}>
                                 <Button variant="contained"
                                     className={style.goBackButton}
                                     sx={{ marginBottom: "20px" }}><a href="/">Go Back To Music!</a></Button>
@@ -137,12 +138,9 @@ export default class Login extends Component {
                                     className={style.goBackButton} onClick={this.handleLogOut}>Log out</Button>
                             </div>
                         </Router>
-                        {/* <Button variant="contained"
-                            className={style.goBackButton}>Go back to music!</Button> */}
                     </div>
                 }
             </div>
         )
     }
-
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -11,13 +12,12 @@ import IconButton from '@mui/joy/IconButton';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
-import PauseRounded from '@mui/icons-material/PauseRounded';
+
 import style from './SongListElement.module.css'
 
 
 
 export default class SongListElement extends Component {
-
 
     state = {
         paused: true,
@@ -47,16 +47,9 @@ export default class SongListElement extends Component {
             <>
                 <List sx={{
                     width: '100%', height: '120px', bgcolor: 'background.paper', fontSize: '28px',
-                    '.css-10hburv-MuiTypography-root': {
-                        fontSize: '21px'
-                    },
-                    '.css-83ijpv-MuiTypography-root': {
-                        fontSize: '17px'
-                    },
-                    '.css-yoab4m-MuiSvgIcon-root': {
-                        fontSize: '40px',
-                        paddingTop: '10px'
-                    }
+                    '.css-10hburv-MuiTypography-root': { fontSize: '21px' },
+                    '.css-83ijpv-MuiTypography-root': { fontSize: '17px' },
+                    '.css-yoab4m-MuiSvgIcon-root': { fontSize: '40px', paddingTop: '10px' }
                 }}
                     className={style.list} >
                     <ListItem alignItems="flex-start" className={style.list}>
@@ -67,24 +60,22 @@ export default class SongListElement extends Component {
                             className={style.listItemText}
                             primary={this.props.title}
                             secondary={
-                                <>
-                                    <React.Fragment>
-                                        <Typography
-                                            sx={{
-                                                display: 'inline',
-                                            }}
-                                            component="span"
-                                            variant="body2"
-                                            color="text.primary"
-                                        >
-                                        </Typography >
-                                        {this.props.artist}
-                                    </React.Fragment>
-                                </>
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                    >
+                                    </Typography >
+                                    {this.props.artist}
+                                </React.Fragment>
                             }
                         />
-                        {localStorage.getItem("isLoggedIn")==="true" &&
+                        {/* only show heart when user is loggeed in */}
+                        {localStorage.getItem("isLoggedIn") === "true" &&
                             <IconButton variant="plain" onClick={() => {
+                                //if song is not liked, then like it, otherwise dislike it
                                 if (this.state.isSongLiked) {
                                     this.props.handleDislikeSong(this.props.id);
                                 } else {
@@ -92,28 +83,19 @@ export default class SongListElement extends Component {
                                 }
                                 this.setState({ isSongLiked: !this.state.isSongLiked });
                             }}>
-                                {!this.state.isSongLiked && <FavoriteBorder sx={{ fontSize: '22px' }} />}
-                                {this.state.isSongLiked && <Favorite sx={{ fontSize: '22px' }} />}
+                                {/* heart button - filled when song is liked, hollow when not liked */}
+                                {this.state.isSongLiked ? (
+                                    <Favorite sx={{ fontSize: '22px' }} />
+                                ) : (
+                                    <FavoriteBorder sx={{ fontSize: '22px' }} />
+                                )}
                             </IconButton>
                         }
                         <IconButton
-                            // aria-label={paused ? 'play' : 'pause'}
                             aria-label='play'
-                            onClick={() => {
-                                this.setState({
-                                    paused: !this.state.paused
-                                })
-                                console.log(this.props.id);
-                                this.props.currentSongChanger(this.props.id)
-                            }}
+                            onClick={() => { this.props.currentSongChanger(this.props.id) }}
                         >
-                            {this.state.paused ? (
-                                <PlayArrowRounded
-                                    sx={{ fontSize: '24px' }}
-                                />
-                            ) : (
-                                <PauseRounded sx={{ fontSize: '24px' }} />
-                            )}
+                            <PlayArrowRounded sx={{ fontSize: '24px' }} />
                         </IconButton>
                     </ListItem>
                     <Divider variant="inset" component="li" />

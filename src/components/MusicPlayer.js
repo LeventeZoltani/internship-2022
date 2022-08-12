@@ -18,10 +18,6 @@ export default class MusicPlayer extends Component {
                     frameBorder="0" allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
                 </iframe>
-                {/* <audio controls>
-                    <source src={this.props.musicSrc} type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                </audio> */}
                 <IconButton onClick={this.props.closePlayer}>
                     <CloseIcon sx={{ color: 'black' }} />
                 </IconButton>
