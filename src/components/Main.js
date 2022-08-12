@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import SongList from './SongList'
 import { Box } from '@mui/system';
 import { useLocation } from 'react-router-dom';
-
+import style from './Main.module.css';
 /* 
  * Function to render main.
  */
@@ -26,7 +26,7 @@ export default function Main(props) {
     }, [props.user.favourites])
 
     return (
-        <main className='main'>
+        <main className={style.main}>
             <Box
                 component="main"
                 sx={{
@@ -38,6 +38,7 @@ export default function Main(props) {
                     marginBottom: 20
                 }}
             >
+                <img className={style.img} src='https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80}' alt='music'></img>
                 <SongList
                     songs={props.songs}
                     handlePlayClick={props.handlePlayClick}
