@@ -39,7 +39,6 @@ export default class App extends Component {
 
     componentDidMount() {
         this.getSongs();
-        console.log("USER: " + JSON.stringify(this.state.user));
         if (localStorage.getItem('isLoggedIn') != null) {
             //if isLoggedIn is already in local storage => set state of isLoggedIn
             this.setState({
@@ -57,10 +56,6 @@ export default class App extends Component {
         else {
             localStorage.setItem('isLoggedIn', false);
         }
-        if (typeof (this.state.isLoggedIn) == "boolean") {
-            console.log("boolean " + this.state.isLoggedIn);
-        }
-
     }
 
     /* DATA MANAGING */
@@ -213,7 +208,6 @@ export default class App extends Component {
             }),
 
         }).then((resp) => {
-            console.log("response " + JSON.stringify(resp));
             this.setUser(this.state.user.username)
         });
     }

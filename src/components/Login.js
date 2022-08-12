@@ -45,6 +45,8 @@ export default class Login extends Component {
         }
     }
 
+    //HANDLE INPUT CHANGES
+
     handleUserChange(e) {
         this.setState({
             username: e.target.value
@@ -73,6 +75,22 @@ export default class Login extends Component {
         });
         localStorage.setItem("isLoggedIn", false);
         localStorage.setItem("username", "null")
+    }
+
+    //BUTTON DISABLE
+
+    loginButton(){
+        if(this.state.username !== '' && this.state.password !== ''){
+            return ( <Button
+                onClick={this.handleLoginSubmit}
+                variant="contained"
+                className={style.submitButton} >LOGIN</Button>)
+        }
+        return ( <Button
+            disabled
+            onClick={this.handleLoginSubmit}
+            variant="contained"
+            className={style.submitButton} >LOGIN</Button>)
     }
 
     render() {
@@ -117,10 +135,7 @@ export default class Login extends Component {
                                 }
                             </div>
                             <div className={style.buttonDiv}>
-                                <Button
-                                    onClick={this.handleLoginSubmit}
-                                    variant="contained"
-                                    className={style.submitButton} >LOGIN</Button>
+                                {this.loginButton()}
                             </div>
                         </form>
                         <p>Don't have an accout? Register <a href="/register">here</a></p>

@@ -25,7 +25,6 @@ class Main extends Component {
             currentSong: song,
             isOpen: true,
         })
-        console.log("opened player: " + this.state.openedPlayer);
     }
 
     closePlayer() {

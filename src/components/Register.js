@@ -13,8 +13,9 @@ export default class Register extends Component {
         matchingPasswords: true,
         username: '',
         password: '',
+        confirmedPassword:'',
         registerSuccess: false,
-        isLoggedIn:false,
+        isLoggedIn: false,
     }
 
     constructor(props) {
@@ -33,7 +34,6 @@ export default class Register extends Component {
                 registerSuccess: this.props.registerSuccess,
                 isLoggedIn: this.props.isLoggedIn
             })
-            console.log("is logged in:"+ this.state.isLoggedIn);
         }
     }
 
@@ -53,6 +53,9 @@ export default class Register extends Component {
 
     //check if passwords match
     handleConfirmPasswordChange(e) {
+        this.setState({
+            confirmedPassword:e.target.value
+        })
         if (e.target.value === this.state.password) {
             this.setState({
                 matchingPasswords: true
@@ -75,6 +78,22 @@ export default class Register extends Component {
 
         this.props.handleRegisterSubmit(userData);
 
+    }
+
+    //BUTTON DISABLE
+
+    registerButton() {
+        if (this.state.username !== '' && this.state.password !== '' && this.state.matchingPasswords === true && this.state.confirmedPassword !=='') {
+            return (<Button
+                onClick={this.handleRegisterSubmit}
+                variant="contained"
+                className={style.submitButton} >REGISTER</Button>)
+        }
+        return (<Button
+            disabled
+            onClick={this.handleRegisterSubmit}
+            variant="contained"
+            className={style.submitButton} >REGISTER</Button>)
     }
 
     render() {
@@ -133,10 +152,7 @@ export default class Register extends Component {
                                 }
                             </div>
                             <div className={style.buttonDiv}>
-                                <Button
-                                    onClick={this.handleRegisterSubmit}
-                                    variant="contained"
-                                    className={style.submitButton} >REGISTER</Button>
+                                { this.registerButton() }
                             </div>
                         </form>
                         <br /><br />
