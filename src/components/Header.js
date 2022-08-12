@@ -7,6 +7,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AutocompleteSearch from './AutocompleteSearch';
 import FilterComponent from './FilterComponent';
 
+/* 
+ * Function for rendering header feature.
+ */
 const Header = (props) => {
     return (
         <AppBar
@@ -16,22 +19,19 @@ const Header = (props) => {
                 ml: { sm: `${props.drawer.drawerWidth}px` },
                 backgroundColor: 'black'
             }}
-
         >
             <Toolbar>
                 <Grid container spacing={2} alignItems='center' columns={{ xs: 4, sm: 8, md: 12 }} justifyContent='space-between'>
-
-                        <Grid item xs={0.5} sx={{ mr: 2, display: { sm: 'none' } }}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                edge="start"
-                                onClick={props.handleDrawerToggle}
-                                
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                        </Grid>
+                    <Grid item xs={0.5} sx={{ mr: 2, display: { sm: 'none' } }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={props.handleDrawerToggle}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Grid>
                     <Grid item xs={3} sm={4} md={4}>
                         <AutocompleteSearch update={props.onChangeSearch} songs={props.songs} />
                     </Grid><Grid item xs={0.5} sm={2} md={2}>

@@ -3,8 +3,10 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
+/* 
+ * Function for rendering heart button.
+ */
 export default function HeartButton(props) {
-    
     return (
         <>
             {

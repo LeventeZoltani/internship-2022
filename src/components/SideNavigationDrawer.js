@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -15,7 +14,9 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import style from './SideNavigationDrawer.module.css'
 
-
+/* 
+ * Function for rendering side navigation drawer.
+ */
 function SideNavigationDrawer(props) {
     const navigate = useNavigate()
     const handleLogout = () => {
@@ -24,7 +25,6 @@ function SideNavigationDrawer(props) {
     }
 
     const drawer = (
-       
         <div className={style.drawer}>
             <Toolbar />
             <List>
@@ -104,16 +104,7 @@ function SideNavigationDrawer(props) {
                 {drawer}
             </Drawer>
         </Box>
-
     );
 }
-
-SideNavigationDrawer.propTypes = {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-};
 
 export default SideNavigationDrawer;

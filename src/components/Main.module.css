@@ -3,16 +3,3 @@
     height: 200px;
     width: 100%;
 }
-
-.decoration {
-    animation: rotate 2000ms linear infinite;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0);
-    }
-    to {
-        transform: rotate(180deg);
-    }
-}

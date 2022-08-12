@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -10,7 +10,9 @@ import HeartButton from './HeartButton';
 import style from './SongRow.module.css';
 
 
-
+/* 
+ * Function for rendering a sible song row
+ */
 export default function SongRow(props) {
 
     return (

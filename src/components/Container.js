@@ -11,13 +11,12 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import style from './Container.module.css'
 import Login from './Login'
 import RequireAuth from './RequireAuth'
 import NotFound from './NotFound'
 import Register from './Register'
 
-
+/** The App's Container. */
 export default class Container extends Component {
     state = {
         drawer: {
@@ -57,6 +56,10 @@ export default class Container extends Component {
     albums = [];
     favouriteSongs = [];
 
+    /**
+    * Constructor method.
+    * @param {object} props - The props object.
+    */
     constructor(props) {
         super(props);
         this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
@@ -75,6 +78,9 @@ export default class Container extends Component {
         this.getFavouriteSongs = this.getFavouriteSongs.bind(this);
     }
 
+    /**
+    * Component did mount lifecycle.
+    */
     componentDidMount() {
         this.getSongs();
         this.getUsers();
@@ -90,6 +96,10 @@ export default class Container extends Component {
     }
 
     // ------ SERVER REQUESTS ------
+
+    /**
+    * Getting songs from database.
+    */
     async getSongs() {
         const response = await fetch(`${this.baseUrl}/songs`);
         this.songs = await response.json();
@@ -102,6 +112,9 @@ export default class Container extends Component {
         }));
     }
 
+    /**
+    * Getting users from database.
+    */
     async getUsers() {
         const response = await fetch(`${this.baseUrl}/users`);
         const users = await response.json();
@@ -110,6 +123,10 @@ export default class Container extends Component {
         }));
     }
 
+    /**
+    * Update users in database.
+    * @param {object} newUserData - The user with changed properties.
+    */
     updateUsers(newUserData) {
         const request = {
             method: 'PUT',
@@ -121,6 +138,10 @@ export default class Container extends Component {
             .then(() => console.log('UPDATE USERS'))
     }
 
+    /**
+    * Create new user in database.
+    * @param {object} newUser - The new user we want to add.
+    */
     createUser(newUser) {
         const request = {
             method: 'POST',
@@ -133,6 +154,11 @@ export default class Container extends Component {
 
     // ------ LOGIN ------
 
+    /**
+    * Validate login inputs.
+    * @param {string} username - Username input value.
+    * @param {string} password - Password input value.
+    */
     validate(username, password) {
         const userIndex = this.state.users.findIndex((user) => user.info.username === username && user.info.password === password);
 
@@ -151,10 +177,17 @@ export default class Container extends Component {
         }
     }
 
+    /**
+    * Handle login click.
+    * @param {object} user - User inputs.
+    */
     handleLoginClick(user) {
         this.validate(user.username, user.password);
     }
 
+    /**
+    * Handle logout click.
+    */
     handleLogoutClick() {
         this.setState({
             user: null,
@@ -169,14 +202,14 @@ export default class Container extends Component {
 
     // ------ REGISTER ------
 
+    /**
+    * Handle register click.
+    * @param {string} user - The users register input values.
+    */
     handleRegisterClick(user) {
-        // this.setState({
-        //     validRegistrationPasswords: true,
-        //     validRegistrationUsername: true
-        // })
         const userIndex = this.state.users.findIndex((u) => u.info.username === user.username);
 
-        if (userIndex === -1) {
+        if (userIndex === -1 && user.username !== '') {
             if (user.password === user.confirmPassword && user.password !== '' && user.confirmPassword !== '') {
                 const newUser = {
                     id: (this.state.users.length + 1).toString(),
@@ -206,6 +239,9 @@ export default class Container extends Component {
 
     // ------ FAVOURITES ------
 
+    /**
+    * Get favourites songs from the songs list based on user.
+    */
     getFavouriteSongs() {
         const favourites = this.state.user.favourites.map((id) =>
             this.state.songs.filter((song) => song.id === id)
@@ -216,6 +252,10 @@ export default class Container extends Component {
         })
     }
 
+    /**
+    * Add to favourites.
+    * @param {string} songId - The id of the song we wanna add.
+    */
     addToFavourites(songId) {
         if (!this.state.user.favourites.includes(songId)) {
             const newUserData = {
@@ -235,6 +275,10 @@ export default class Container extends Component {
         }
     }
 
+    /**
+    * Remove from favourites.
+    * @param {string} songId - The id of the song we wanna remove.
+    */
     removeFromFavourites(songId) {
         if (this.state.user.favourites.includes(songId)) {
             const newUserData = {
@@ -257,40 +301,66 @@ export default class Container extends Component {
 
     // ------ FILTER ------
 
+    /**
+    * Set album input value on change.
+    * @param {object} obj - New album input value.
+    */
     onChangeAlbum(obj) {
         this.setState(() => ({
             'albumInput': obj.value
         }))
     }
 
+    /**
+    * Set artist input value on change.
+    * @param {object} obj - New artist input value.
+    */
     onChangeArtist(obj) {
         this.setState({
             'artistInput': obj.value
         })
     }
 
+    /**
+    * Set genre input value on change.
+    * @param {object} obj - New genre input value.
+    */
     onChangeGenre(obj) {
         this.setState({
             'genreInput': obj.value
         })
     }
 
+    /**
+    * Set search input value on change.
+    * @param {object} obj - New search input value.
+    */
     onChangeSearch(obj) {
         this.setState({
             'searchInput': obj.value
         })
     }
 
+    /**
+    * Get property values for filter dropdowns.
+    * @param {string} property - New album input value.
+    * @param {array} array - Array with data based on property.
+    */
     getPropertyValues = (property, array) => {
         this.songs.forEach(song => {
             const propValue = song[property];
             if (!array.includes(propValue)) {
                 array.push(propValue);
             }
-
         });
     }
 
+    /**
+    * Filter based on field.
+    * @param {string} input - New input value.
+    * @param {array} newSongs - The filtered array.
+    * @param {string} field - The field we wanna filter.
+    */
     filterHelper(input, newSongs, field) {
         if (input !== '') {
             let value = input;
@@ -304,6 +374,9 @@ export default class Container extends Component {
         return newSongs;
     }
 
+    /**
+    * Filtering the songs.
+    */
     filterBy() {
         let newSongs = this.songs;
         const location = window.location.pathname;
@@ -329,10 +402,19 @@ export default class Container extends Component {
 
     // ------ PLAYER ------
 
+    /**
+    * Handle play click on song.
+    * @param {object} song - The song we wanna play.
+    */
     handlePlayClick(song) {
         this.handlePlayerOpened(!this.opened, song);
     };
 
+    /**
+    * Set player on click.
+    * @param {boolean} opened - The player is opened or not.
+    * @param {object} playedSong - The song we wanna play.
+    */
     handlePlayerOpened(opened, playedSong) {
         this.setState({
             player: { opened, playedSong }
@@ -341,6 +423,9 @@ export default class Container extends Component {
 
     // ------ DRAWER ------
 
+    /**
+    * Handle drawer on mobile view and web view.
+    */
     handleDrawerToggle = () => {
         const mobileOpen = !this.state.drawer.mobileOpen;
         const drawerWidth = this.state.drawer.drawerWidth
@@ -386,66 +471,54 @@ export default class Container extends Component {
                 <Routes>
                     <Route exact path="/" element={
                         !this.state.isLoggedIn ? (
-                            <main className={style.main}>
-                                <Login handleLoginClick={this.handleLoginClick} validLogin={this.state.validLogin} />
-                            </main>) : (<Navigate to="/home" />)
+                            <Login handleLoginClick={this.handleLoginClick} validLogin={this.state.validLogin} />
+                        ) : (<Navigate to="/home" />)
 
                     } />
 
                     <Route exact path="/register" element={
                         !this.state.isLoggedIn ? (
                             <RequireAuth isLoggedIn={!this.state.isRegistered}>
-                                <main className={style.main}>
-                                    <Register
-                                        handleRegisterClick={this.handleRegisterClick}
-                                        validRegistrationUsername={this.state.validRegistrationUsername}
-                                        validRegistrationPasswords={this.state.validRegistrationPasswords}
-                                    />
-                                </main></RequireAuth>
-
+                                <Register
+                                    handleRegisterClick={this.handleRegisterClick}
+                                    validRegistrationUsername={this.state.validRegistrationUsername}
+                                    validRegistrationPasswords={this.state.validRegistrationPasswords}
+                                />
+                            </RequireAuth>
                         ) : (<Navigate to="/" />)} />
 
                     <Route exact path="/home" element={
 
                         <RequireAuth isLoggedIn={this.state.isLoggedIn}>
-
-                            <main className={style.main}>
-                                <Main
-                                    drawer={this.state.drawer}
-                                    songs={this.filterBy()}
-                                    handlePlayClick={this.handlePlayClick}
-                                    addToFavourites={this.addToFavourites}
-                                    removeFromFavourites={this.removeFromFavourites}
-                                    user={this.state.user}
-                                    getFavouriteSongs={this.getFavouriteSongs}
-                                />
-                            </main>
+                            <Main
+                                drawer={this.state.drawer}
+                                songs={this.filterBy()}
+                                handlePlayClick={this.handlePlayClick}
+                                addToFavourites={this.addToFavourites}
+                                removeFromFavourites={this.removeFromFavourites}
+                                user={this.state.user}
+                                getFavouriteSongs={this.getFavouriteSongs}
+                            />
                         </RequireAuth>
 
                     }>
                     </Route>
                     <Route exact path="/favourites" element={
                         <RequireAuth isLoggedIn={this.state.isLoggedIn}>
-                            <main className={style.main}>
-                                <Main
-                                    drawer={this.state.drawer}
-                                    songs={this.filterBy()}
-                                    handlePlayClick={this.handlePlayClick}
-                                    addToFavourites={this.addToFavourites}
-                                    removeFromFavourites={this.removeFromFavourites}
-                                    user={this.state.user}
-                                    getFavouriteSongs={this.getFavouriteSongs}
-                                />
-                            </main>
-
+                            <Main
+                                drawer={this.state.drawer}
+                                songs={this.filterBy()}
+                                handlePlayClick={this.handlePlayClick}
+                                addToFavourites={this.addToFavourites}
+                                removeFromFavourites={this.removeFromFavourites}
+                                user={this.state.user}
+                                getFavouriteSongs={this.getFavouriteSongs}
+                            />
                         </RequireAuth>
                     } />
                     <Route exact path="*" element={
-                        <main>
-                            <NotFound />
-                        </main>
+                        <NotFound />
                     } />
-
                 </Routes>
             </Router>
         )

@@ -1,3 +1,6 @@
+/* 
+ * Function for formatting duration of song.
+ */
 const formatDuration = (value) => {
     const minute = Math.floor(value / 60);
     const secondLeft = Math.floor(value - minute * 60);

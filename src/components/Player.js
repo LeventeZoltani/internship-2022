@@ -33,6 +33,9 @@ const CoverImage = ({ img, title }) => (
     </img>
 )
 
+/* 
+ * Function for rendering player.
+ */
 const Player = (props) => {
 
     const [trackProgress, setTrackProgress] = useState(0);
@@ -115,8 +118,6 @@ const Player = (props) => {
                             <Typography color='white' variant='h4' align='left'>{props.playedSong.title}</Typography>
                             <Typography color='white' variant='h6' align='left'>{props.playedSong.artist}</Typography>
                         </Grid>
-
-
                         <Grid item xs={4} sm={8} md lg>
                             <Box
                                 sx={{
