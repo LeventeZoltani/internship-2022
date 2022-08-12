@@ -69,6 +69,20 @@ export default {
         author: "David Guetta",
         image: "https://i1.sndcdn.com/artworks-000470737074-xpgnv0-t500x500.jpg",
         audio: "https://open.spotify.com/embed/track/0YammaEkYSeo9vQYZ1OwS6?utm_source=generator"
+      },
+      {
+        id: "11",
+        title: "Where are you now",
+        author: "Lost Frequencies",
+        image: "https://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Lost_Frequencies_Where_Are_You_Now.jpg/220px-Lost_Frequencies_Where_Are_You_Now.jpg",
+        audio: "https://open.spotify.com/embed/track/0YammaEkYSeo9vQYZ1OwS6?utm_source=generator"
+      },
+      {
+        id: "12",
+        title: "Havana",
+        author: "Camila Cabello",
+        image: "https://i.ytimg.com/vi/LOYNubN9aS8/maxresdefault.jpg",
+        audio: "https://open.spotify.com/embed/track/0YammaEkYSeo9vQYZ1OwS6?utm_source=generator"
       }
     ]
   }

@@ -77,8 +77,6 @@ class Main extends Component {
 
         return (
             <>
-
-
                 <main className={style.main}>
 
                     <Row xs={1} md={5} className={style.row}>

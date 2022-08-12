@@ -22,19 +22,22 @@
     width: 50%;
     height: 10px;
 }
-
+/* 
 .button {
     background-color: white;
-    color: black;
+    color: rgb(53, 86, 194);
     border: 2px solid #e7e7e7;
     width: 8rem;
     height: 3rem;
+    font-size: medium;
   }
   
-.button:hover {background-color: #e7e7e7;}
+.button:hover {background-color: #e7e7e7;} */
 
 .link {
-    width: 5rem;
-    height: 3rem;
-    text-size-adjust: 10px;
+    width: 8rem;
+    height: 5rem;
+    font-size: medium;
+    color:deeppink;
+    font-style: normal;
 }

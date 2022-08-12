@@ -7,31 +7,30 @@ import Footer from './components/Footer';
 // import Baby from 'https://open.spotify.com/embed/track/6epn3r7S14KUqlReYr77hA?utm_source=generator';
 // import { AudioPlaylist } from 'ts-audio';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import { Routes } from 'react-router-dom';
 import Header from './components/Header';
 import FavoriteList from './components/FavoriteList';
+import Form from './components/Form';
 
 const App = () => {
 
   return (
     <>
-      {/* <Header /> */}
-      
       <Router>
-        {/* <div> */}
         <Switch>
           <Route path="/home">
-          <Header></Header>
-          <Main></Main>
+            <Header></Header>
+            <Main></Main>
           </Route>
           <Route path="/favoritelist">
-          <Header></Header>
-              <FavoriteList></FavoriteList>
+            <Header></Header>
+            <FavoriteList></FavoriteList>
+          </Route>
+          <Route path="/login">
+            <Header></Header>
+            <Form></Form>
           </Route>
         </Switch>
-        {/* </div> */}
       </Router>
-      {/* <Main /> */}
       <Footer />
     </>
   );

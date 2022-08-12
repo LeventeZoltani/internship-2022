@@ -50,14 +50,16 @@
 .card {
     background-color: #dfc2dc;
     border: none;
-    color: rgb(0, 0, 0);
+    color: rgb(218, 49, 199);
+    font-weight: bold;
+    font-size: x-large;
     padding: 10px 40px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
     border-radius: 20px;
-    margin: 0.0rem;
+    margin: 2rem;
 }
 
   .audio {
